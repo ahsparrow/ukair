@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Airspace Select</title>
+
+  <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/vendor/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+  <form class="form-horizontal" action="/" method="post">
+
+    <div class="form-group">
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentaton" class="active">
+          <a href="#main" role="tab" data-toggle="tab">Main</a>
+        </li>
+        <li role="presentaton">
+          <a href="#wave" role="tab" data-toggle="tab">Wave Box</a>
+        </li>
+        <li role="presentaton">
+          <a href="#loa" role="tab" data-toggle="tab">LoA</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="main">
+        {% for x in choices %}
+        <div class="form-group">
+          <label class="col-xs-4 control-label">{{x.label}}</label>
+          <div class="col-xs-8">
+            <label class="radio-inline">
+              <input type="radio" name="{{x.name}}" value="{{x.value1}}" {{"checked" if values[x.name]==x.value1}}>
+                {{x.option1}}
+              </input>
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="{{x.name}}" value="{{x.value2}}" {{"checked" if values[x.name]==x.value2}}>
+                {{x.option2}}
+              </input>
+            </label>
+          </div>
+        </div>
+        {% endfor %}
+
+        <div class="form-group">
+          <label class="col-xs-4 control-label">Format</label>
+          <div class="col-xs-4">
+            <select class="form-control">
+              <option>SeeYou</option>
+              <option>XCSoar</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div role="tabpanel" class="tab-pane" id="wave">
+        <p>Wave Box</p>
+      </div>
+
+      <div role="tabpanel" class="tab-pane" id="loa">
+        <div class="form-group">
+        {% for x in loas %}
+          <div class="col-xs-6 checkbox">
+            <label>
+              <input type="checkbox" name="loa{{x}}" value="" checked> {{x}}
+            </label>
+          </div>
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <button type="Submit" class="btn btn-default">Download</button>
+  </form>
+</div>
+
+<script src="static/vendor/jquery/jquery.min.js"></script>
+<script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+</html>

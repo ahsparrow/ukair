@@ -38,38 +38,65 @@ def home():
     try:
       values = json.loads(request.cookies.get('values'))
     except TypeError:
-      values = {}
+      values = {
+          'nonatz': "include",
+          'microlight': "exclude",
+          'hirta': "exclude",
+          'gvs': "exclude",
+          'obstacle': "exclude",
+          'glider': "exclude",
+          'atz': "classd",
+          'ils': "classd",
+          'format': "seeyou",
+          'north': "59",
+          'south': "50"
+      }
 
-  choices = [{'name': "nonatz", 'label': "Non-ATZs",
-              'value1': "include", 'option1': "Include",
-              'value2': "exclude", 'option2': "Exclude"
-             },
-             {'name': "microlight", 'label': "Microlight",
-              'value1': "include", 'option1': "Include",
-              'value2': "exclude", 'option2': "Exclude"
-             },
-             {'name': "hirta", 'label': "HIRTAs",
-              'value1': "include", 'option1': "Include",
-              'value2': "exclude", 'option2': "Exclude"
-             },
-             {'name': "gvs", 'label': "GVSs",
-              'value1': "include", 'option1': "Include",
-              'value2': "exclude", 'option2': "Exclude"
-             },
-             {'name': "glider", 'label': "Gliding Sites",
-              'value1': "include", 'option1': "Include",
-              'value2': "exclude", 'option2': "Exclude"
-             },
-             {'name': "atz", 'label': "ATZs",
-              'value1': "classd", 'option1': "Class D",
-              'value2': "classg", 'option2': "Class G"
-             },
-             {'name': "ils", 'label': "ILS Feathers",
-              'value1': "classd", 'option1': "Class D",
-              'value2': "classg", 'option2': "Class G"
-             }]
+  choices = [
+      {'name': "nonatz", 'label': "Non-ATZs",
+       'value1': "include", 'option1': "Include",
+       'value2': "exclude", 'option2': "Exclude"
+      },
+      {'name': "microlight", 'label': "Microlight",
+       'value1': "include", 'option1': "Include",
+       'value2': "exclude", 'option2': "Exclude"
+      },
+      {'name': "hirta", 'label': "HIRTAs",
+       'value1': "include", 'option1': "Include",
+       'value2': "exclude", 'option2': "Exclude"
+      },
+      {'name': "gvs", 'label': "GVSs",
+       'value1': "include", 'option1': "Include",
+       'value2': "exclude", 'option2': "Exclude"
+      },
+      {'name': "obstacle", 'label': "Obstacles",
+       'value1': "include", 'option1': "Include",
+       'value2': "exclude", 'option2': "Exclude"
+      },
+      {'name': "glider", 'label': "Gliding Sites",
+       'value1': "include", 'option1': "Include",
+       'value2': "exclude", 'option2': "Exclude"
+      },
+      {'name': "atz", 'label': "ATZs",
+       'value1': "classd", 'option1': "Class D",
+       'value2': "classg", 'option2': "Class G"
+      },
+      {'name': "ils", 'label': "ILS Feathers",
+       'value1': "classd", 'option1': "Class D",
+       'value2': "classg", 'option2': "Class G"
+      }
+  ]
+
+  formats = [
+      {'name': "xcsoar", 'label': "XCSoar"},
+      {'name': "seeyou", 'label': "SeeYou"}
+  ]
 
   resp  = make_response(
-     render_template("main.html", choices=choices, values=values, wave=get_wave(), loas=get_loas()))
+     render_template("main.html", release="AIRAC: 25-May-17",
+                     values=values,
+                     choices=choices, formats=formats,
+                     wave=get_wave(), loas=get_loas()))
+
   resp.set_cookie('values', json.dumps(values))
   return resp

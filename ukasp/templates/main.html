@@ -15,24 +15,31 @@
 <div class="container">
   <form class="form-horizontal" action="/" method="post">
 
+    <!-- Navigation tabs -->
     <div class="form-group">
       <ul class="nav nav-tabs" role="tablist">
         <li role="presentaton" class="active">
           <a href="#main" role="tab" data-toggle="tab">Main</a>
         </li>
         <li role="presentaton">
-          <a href="#wave" role="tab" data-toggle="tab">Wave Box</a>
+          <a href="#loa" role="tab" data-toggle="tab">LoA</a>
         </li>
         <li role="presentaton">
-          <a href="#loa" role="tab" data-toggle="tab">LoA</a>
+          <a href="#options" role="tab" data-toggle="tab">Options</a>
+        </li>
+        <li role="presentaton">
+          <a href="#about" role="tab" data-toggle="tab">About</a>
         </li>
       </ul>
     </div>
 
-    <div class="tab-content">
+    <!-- Main tab -->
+    <div class="tab-content" id="tabdiv">
       <div role="tabpanel" class="tab-pane active" id="main">
+
+        <!-- Choices, choices... -->
         {% for x in choices %}
-        <div class="form-group">
+        <div class="form-group row">
           <label class="col-xs-4 control-label">{{x.label}}</label>
           <div class="col-xs-8">
             <label class="radio-inline">
@@ -49,18 +56,24 @@
         </div>
         {% endfor %}
 
-        <div class="form-group">
+        <!-- Output format select -->
+        <div class="form-group row">
           <label class="col-xs-4 control-label">Format</label>
-          <div class="col-xs-4">
+          <div class="col-xs-8 col-md-4">
             <select class="form-control" name="format">
-              <option>SeeYou</option>
-              <option>XCSoar</option>
+              {% for format in formats %}
+              <option value="{{format['name']}}" {{"selected" if values['format'] == format['name']}}>{{format.label}}</option>
+              {% endfor %}
             </select>
           </div>
         </div>
+
       </div>
 
-      <div role="tabpanel" class="tab-pane" id="wave">
+      <!-- Wave boax and LoA tab -->
+      <div role="tabpanel" class="tab-pane" id="loa">
+
+        <!-- Wave boxes -->
         <div class="form-group">
         {% for x in wave %}
           <div class="col-xs-6 checkbox">
@@ -70,9 +83,8 @@
           </div>
         {% endfor %}
         </div>
-      </div>
 
-      <div role="tabpanel" class="tab-pane" id="loa">
+        <!-- LoAs -->
         <div class="form-group">
         {% for x in loas %}
           <div class="col-xs-6 checkbox">
@@ -82,10 +94,55 @@
           </div>
         {% endfor %}
         </div>
+
+      </div>
+
+      <!-- Option tab -->
+      <div role="tabpanel" class="tab-pane" id="options">
+
+        <!-- Exclude above FL105 -->
+        <div class="form-group row">
+          <div class="col-xs-offset-4 col-xs-8 checkbox">
+            <label>
+              <input type="checkbox" name="fl105" value="" {{"checked" if "fl105" in values}}>
+              Omit airspace above FL105
+            </label>
+          </div>
+        </div>
+
+        <!-- Latitude max/min -->
+        <div class="form-group row">
+          <label class="col-xs-4 control-label">Omit North of latitude</label>
+          <div class="col-xs-8 col-md-4">
+            <select class="form-control" name="north">
+              {% for x in range(59, 50, -1) %}
+              <option value="{{x}}" {{"selected" if values['north'] == x|string}}>{{x}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-xs-4 control-label">Omit South of latitude</label>
+          <div class="col-xs-8 col-md-4">
+            <select class="form-control" name="south">
+              {% for x in range(58, 49, -1) %}
+              <option value="{{x}}" {{"selected" if values['south'] == x|string}}>{{x}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- About tab -->
+      <div role="tabpanel" class="tab-pane" id="about">
+        {{lipsum()}}
       </div>
     </div>
 
     <button type="Submit" class="btn btn-default">Download</button>
+
+    <p class="pull-right">{{release}}</p>
   </form>
 </div>
 

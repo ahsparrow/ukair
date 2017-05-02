@@ -1,8 +1,33 @@
 import json
+import os
 
-from flask import Flask, make_response, render_template, request
+from flask import Flask, g, make_response, render_template, request
 
 app = Flask(__name__)
+
+def get_airspace():
+  if not hasattr(g, 'airspace'):
+    with open(os.path.join(app.root_path, "data/airspace.json")) as js:
+      g.airspace = json.load(js)
+
+  return g.airspace
+
+def get_loas():
+  if not hasattr(g, 'loas'):
+    airspace = get_airspace()
+    g.loas = [a['name'] for a in airspace if a.get('localtype') == "LOA"]
+    g.loas.sort()
+
+  return g.loas
+
+def get_wave():
+  if not hasattr(g, 'wave'):
+    airspace = get_airspace()
+    g.wave = [a['name'] for a in airspace
+              if a.get('localtype') == "TRAG" or a.get('localtype') == "NSGA"]
+    g.wave.sort()
+
+  return g.wave
 
 @app.route("/", methods=['POST', 'GET'])
 def home():
@@ -44,9 +69,7 @@ def home():
               'value2': "classg", 'option2': "Class G"
              }]
 
-  loas = ["MADLEY", "RAGLAN", "BRIZE", "COMPTON BOX", "BRISTOL", "CAMPHILL"]
-
   resp  = make_response(
-     render_template("main.html", choices=choices, values=values, loas=loas))
+     render_template("main.html", choices=choices, values=values, wave=get_wave(), loas=get_loas()))
   resp.set_cookie('values', json.dumps(values))
   return resp

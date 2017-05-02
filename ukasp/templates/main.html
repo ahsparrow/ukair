@@ -52,7 +52,7 @@
         <div class="form-group">
           <label class="col-xs-4 control-label">Format</label>
           <div class="col-xs-4">
-            <select class="form-control">
+            <select class="form-control" name="format">
               <option>SeeYou</option>
               <option>XCSoar</option>
             </select>
@@ -61,7 +61,15 @@
       </div>
 
       <div role="tabpanel" class="tab-pane" id="wave">
-        <p>Wave Box</p>
+        <div class="form-group">
+        {% for x in wave %}
+          <div class="col-xs-6 checkbox">
+            <label>
+              <input type="checkbox" name="id-{{x}}" value="" {{"checked" if ("id-" ~ x) in values}}> {{x}}
+            </label>
+          </div>
+        {% endfor %}
+        </div>
       </div>
 
       <div role="tabpanel" class="tab-pane" id="loa">
@@ -69,7 +77,7 @@
         {% for x in loas %}
           <div class="col-xs-6 checkbox">
             <label>
-              <input type="checkbox" name="loa{{x}}" value="" checked> {{x}}
+              <input type="checkbox" name="id-{{x}}" value="" {{"checked" if ("id-" ~ x) in values}}> {{x}}
             </label>
           </div>
         {% endfor %}

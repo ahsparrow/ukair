@@ -29,31 +29,40 @@ def get_wave():
 
   return g.wave
 
-@app.route("/", methods=['POST', 'GET'])
+@app.route("/", methods=['POST'])
+def download():
+  values = request.form.to_dict()
+  print(values)
+
+  str = "Some airspace.\r\n\r\nNot really, just kidding.\r\n"
+  resp  = make_response(str.encode(encoding="ascii"))
+  resp.headers['Content-Type'] = "text/plain"
+  resp.headers['Content-Disposition'] = "attachment; filename=foo.txt"
+  resp.set_cookie('values', json.dumps(values))
+
+  return resp
+
+@app.route("/", methods=['GET'])
 def home():
-  if request.method == 'POST':
-    values = request.form.to_dict()
-    print(values)
-  else:
-    try:
-      values = json.loads(request.cookies.get('values'))
-    except TypeError:
-      values = {
-          'nonatz': "include",
-          'microlight': "exclude",
-          'hirta': "exclude",
-          'gvs': "exclude",
-          'obstacle': "exclude",
-          'glider': "exclude",
-          'atz': "classd",
-          'ils': "classd",
-          'format': "seeyou",
-          'north': "59",
-          'south': "50"
-      }
+  try:
+    values = json.loads(request.cookies.get('values'))
+  except TypeError:
+    values = {
+        'nonatz': "include",
+        'microlight': "exclude",
+        'hirta': "exclude",
+        'gvs': "exclude",
+        'obstacle': "exclude",
+        'glider': "exclude",
+        'atz': "classd",
+        'ils': "classd",
+        'format': "seeyou",
+        'north': "59",
+        'south': "50"
+    }
 
   choices = [
-      {'name': "nonatz", 'label': "Non-ATZs",
+      {'name': "nonatz", 'label': "Non-ATZ",
        'value1': "include", 'option1': "Include",
        'value2': "exclude", 'option2': "Exclude"
       },
@@ -61,27 +70,27 @@ def home():
        'value1': "include", 'option1': "Include",
        'value2': "exclude", 'option2': "Exclude"
       },
-      {'name': "hirta", 'label': "HIRTAs",
+      {'name': "hirta", 'label': "HIRTA",
        'value1': "include", 'option1': "Include",
        'value2': "exclude", 'option2': "Exclude"
       },
-      {'name': "gvs", 'label': "GVSs",
+      {'name': "gvs", 'label': "GVS",
        'value1': "include", 'option1': "Include",
        'value2': "exclude", 'option2': "Exclude"
       },
-      {'name': "obstacle", 'label': "Obstacles",
+      {'name': "obstacle", 'label': "Obstacle",
        'value1': "include", 'option1': "Include",
        'value2': "exclude", 'option2': "Exclude"
       },
-      {'name': "glider", 'label': "Gliding Sites",
+      {'name': "glider", 'label': "Gliding Site",
        'value1': "include", 'option1': "Include",
        'value2': "exclude", 'option2': "Exclude"
       },
-      {'name': "atz", 'label': "ATZs",
+      {'name': "atz", 'label': "ATZ",
        'value1': "classd", 'option1': "Class D",
        'value2': "classg", 'option2': "Class G"
       },
-      {'name': "ils", 'label': "ILS Feathers",
+      {'name': "ils", 'label': "ILS Feather",
        'value1': "classd", 'option1': "Class D",
        'value2': "classg", 'option2': "Class G"
       }
@@ -97,6 +106,4 @@ def home():
                      values=values,
                      choices=choices, formats=formats,
                      wave=get_wave(), loas=get_loas()))
-
-  resp.set_cookie('values', json.dumps(values))
   return resp

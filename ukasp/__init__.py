@@ -1,1 +1,0 @@
-from .ukasp import app

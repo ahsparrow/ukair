@@ -1,2 +1,2 @@
-from ukasp import app
+from ukair import app
 app.run(debug=True, host="0.0.0.0")

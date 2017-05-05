@@ -1,1 +1,1 @@
-web: gunicorn:app
+web: gunicorn ukair:app --log-file=-

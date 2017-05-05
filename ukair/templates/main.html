@@ -44,10 +44,12 @@
       <div role="tabpanel" class="tab-pane active" id="main">
 
         <!-- Choices, choices... -->
+        <p class="lead">Airspace Filter and Class</p>
+
         {% for x in choices %}
         <div class="form-group row">
-          <label class="col-xs-4 control-label">{{x.label}}</label>
-          <div class="col-xs-8">
+          <label class="col-xs-5 control-label">{{x.label}}</label>
+          <div class="col-xs-7">
             <label class="radio-inline">
               <input type="radio" name="{{x.name}}" value="{{x.value1}}" {{"checked" if values[x.name]==x.value1}}>
                 {{x.option1}}
@@ -64,8 +66,8 @@
 
         <!-- Output format select -->
         <div class="form-group row">
-          <label class="col-xs-4 control-label">Format</label>
-          <div class="col-xs-8 col-md-4">
+          <label class="col-xs-5 control-label">Format</label>
+          <div class="col-xs-7 col-md-4">
             <select class="form-control" name="format">
               {% for format in formats %}
               <option value="{{format['name']}}" {{"selected" if values['format'] == format['name']}}>{{format.label}}</option>
@@ -78,6 +80,8 @@
 
       <!-- Wave boax and LoA tab -->
       <div role="tabpanel" class="tab-pane" id="loa">
+
+        <p class="lead">Wave Boxes and LoAs</p>
 
         <!-- Wave boxes -->
         <div class="form-group">
@@ -105,6 +109,7 @@
 
       <!-- Option tab -->
       <div role="tabpanel" class="tab-pane" id="options">
+        <p class="lead">Spatial Options</p>
 
         <!-- Exclude above FL105 -->
         <div class="form-group row">

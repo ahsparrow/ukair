@@ -73,11 +73,11 @@ def home():
     }
 
   choices = [
-      {'name': "nonatz", 'label': "Non-ATZ",
+      {'name': "nonatz", 'label': "Non-ATZ Airfield",
        'value1': "include", 'option1': "Include",
        'value2': "exclude", 'option2': "Exclude"
       },
-      {'name': "microlight", 'label': "Microlight",
+      {'name': "microlight", 'label': "Microlight Strip",
        'value1': "include", 'option1': "Include",
        'value2': "exclude", 'option2': "Exclude"
       },

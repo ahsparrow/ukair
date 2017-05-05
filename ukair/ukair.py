@@ -45,10 +45,11 @@ def download():
   print(values)
 
   str = openair.convert(get_airspace()['airspace'])
+  filename = "uk%s.txt" % get_airac()
 
   resp  = make_response(str.encode(encoding="ascii"))
   resp.headers['Content-Type'] = "text/plain"
-  resp.headers['Content-Disposition'] = "attachment; filename=foo.txt"
+  resp.headers['Content-Disposition'] = "attachment; filename=%s" % filename
   resp.set_cookie('values', json.dumps(values))
 
   return resp

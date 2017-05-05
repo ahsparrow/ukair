@@ -3,6 +3,8 @@ import os
 
 from flask import Flask, g, make_response, render_template, request
 
+from . import openair
+
 app = Flask(__name__)
 
 def get_airspace():
@@ -15,7 +17,8 @@ def get_airspace():
 def get_loas():
   if not hasattr(g, 'loas'):
     airspace = get_airspace()
-    g.loas = [a['name'] for a in airspace if a.get('localtype') == "LOA"]
+    g.loas = [a['name'] for a in airspace['airspace']
+              if "LOA" in a.get('rules', [])]
     g.loas.sort()
 
   return g.loas
@@ -23,18 +26,26 @@ def get_loas():
 def get_wave():
   if not hasattr(g, 'wave'):
     airspace = get_airspace()
-    g.wave = [a['name'] for a in airspace
-              if a.get('localtype') == "TRAG" or a.get('localtype') == "NSGA"]
+    g.wave = [a['name'] for a in airspace['airspace']
+              if "TRA" in a.get('rules', []) or "NOSSR" in a.get('rules', [])]
     g.wave.sort()
 
   return g.wave
+
+def get_airac():
+  if not hasattr(g, 'airac'):
+    airspace = get_airspace()
+    g.airac = airspace['header']['airac_date']
+
+  return g.airac
 
 @app.route("/", methods=['POST'])
 def download():
   values = request.form.to_dict()
   print(values)
 
-  str = "Some airspace.\r\n\r\nNot really, just kidding.\r\n"
+  str = openair.convert(get_airspace()['airspace'])
+
   resp  = make_response(str.encode(encoding="ascii"))
   resp.headers['Content-Type'] = "text/plain"
   resp.headers['Content-Disposition'] = "attachment; filename=foo.txt"
@@ -101,9 +112,14 @@ def home():
       {'name': "seeyou", 'label': "SeeYou"}
   ]
 
+  release= "AIRAC: %s" % get_airac()
+
   resp  = make_response(
-     render_template("main.html", release="AIRAC: 25-May-17",
+     render_template("main.html",
                      values=values,
-                     choices=choices, formats=formats,
-                     wave=get_wave(), loas=get_loas()))
+                     release=release,
+                     choices=choices,
+                     formats=formats,
+                     wave=get_wave(),
+                     loas=get_loas()))
   return resp

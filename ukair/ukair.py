@@ -63,7 +63,8 @@ def download():
   print(values)
 
   str = openair.convert(get_airspace()['airspace'],
-                        ffunc=airfilter.filter_factory(values))
+                        ffunc=airfilter.filter_factory(values),
+                        cfunc=airfilter.class_factory(values))
   filename = "uk%s.txt" % get_airac()
 
   resp  = make_response(str.encode(encoding="ascii"))

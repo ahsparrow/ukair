@@ -88,3 +88,59 @@ def filter_factory(values):
     return True
 
   return filter_f
+
+def class_factory(values):
+  def class_f(feature, volume):
+    # Class A-D
+    cls = volume.get('class') or feature.get('class')
+    if cls and cls in "ABCD":
+      return cls
+
+    # Danger, prohibited and restricted
+    typ  = feature['type']
+    if typ == "D":
+      return "Q"
+
+    if typ in "RP":
+      return typ
+
+    # Drop zone -> Danger
+    localtype = feature.get('localtype')
+    if localtype == "DZ":
+      return "Q"
+
+    # MATZ
+    if localtype == "MATZ":
+      return "MATZ"
+
+    # TMZ
+    rules = set(feature.get('rules', [])) | set(volume.get('rules', []))
+    if localtype == "TMZ" or "TMZ" in rules:
+      return "TMZ"
+
+    # RMZ
+    if localtype == "RMZ" or "RMZ" in rules:
+      return "RMZ"
+
+    # ATZ
+    if typ == "ATZ":
+      if values['atz'] == "classd":
+        return "D"
+
+    # ILS Feather
+    if localtype == "ILS":
+      if values['ils'] == "classd":
+        return "D"
+
+    # LoA and wave boxes
+    if set(["LOA", "NOSSR", "TRA"]) & rules:
+      return "W"
+
+    # Class E and F
+    if cls and cls in "EF":
+      return cls
+
+    # Everything else defaults to class C
+    return "G"
+
+  return class_f

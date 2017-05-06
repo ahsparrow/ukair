@@ -1,6 +1,6 @@
 # Copyright 2017 Alan Sparrow
 #
-# This file is part of Airplot
+# This file is part of ukair
 #
 # Airplot is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

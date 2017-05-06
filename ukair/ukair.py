@@ -3,6 +3,7 @@ import os
 
 from flask import Flask, g, make_response, render_template, request
 
+from . import airfilter
 from . import openair
 
 app = Flask(__name__)
@@ -44,7 +45,8 @@ def download():
   values = request.form.to_dict()
   print(values)
 
-  str = openair.convert(get_airspace()['airspace'])
+  str = openair.convert(get_airspace()['airspace'],
+                        ffunc=airfilter.filter_factory(values))
   filename = "uk%s.txt" % get_airac()
 
   resp  = make_response(str.encode(encoding="ascii"))

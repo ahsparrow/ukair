@@ -132,6 +132,10 @@ def class_factory(values):
       if values['ils'] == "classd":
         return "D"
 
+    # Radio advisory LoA
+    if "RAZ" in rules or "RAA" in rules:
+      return "F"
+
     # LoA and wave boxes
     if set(["LOA", "NOSSR", "TRA"]) & rules:
       return "W"

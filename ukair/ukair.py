@@ -90,7 +90,9 @@ def home():
         'ils': "classd",
         'format': "seeyou",
         'north': "59",
-        'south': "50"
+        'south': "50",
+        'id-RAZ CAMBRIDGE': None,
+        'id-RAA GLASGOW STORNOWAY': None
     }
 
   choices = [

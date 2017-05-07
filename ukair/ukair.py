@@ -60,8 +60,6 @@ def get_airac():
 @app.route("/", methods=['POST'])
 def download():
   values = request.form.to_dict()
-  print(values)
-
   str = openair.convert(get_airspace()['airspace'],
                         ffunc=airfilter.filter_factory(values),
                         cfunc=airfilter.class_factory(values))

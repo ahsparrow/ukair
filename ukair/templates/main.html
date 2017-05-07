@@ -112,10 +112,10 @@
 
         <!-- Exclude above FL105 -->
         <div class="form-group row">
-          <label class="col-xs-4 control-label" for="fl105">
+          <label class="col-xs-5 control-label" for="fl105">
             Omit above FL105
           </label>
-          <div class="col-xs-8 checkbox">
+          <div class="col-xs-7 checkbox">
             <label>
               <input type="checkbox" id="fl105" name="fl105" value="" {{"checked" if "fl105" in values}}>
             </label>
@@ -124,8 +124,8 @@
 
         <!-- Latitude max/min -->
         <div class="form-group row">
-          <label class="col-xs-4 control-label">Omit North of latitude</label>
-          <div class="col-xs-8 col-md-4">
+          <label class="col-xs-5 control-label">Omit North of latitude</label>
+          <div class="col-xs-7 col-md-4">
             <select class="form-control" name="north">
               {% for x in range(59, 50, -1) %}
               <option value="{{x}}" {{"selected" if values['north'] == x|string}}>{{x}}°</option>
@@ -134,8 +134,8 @@
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-xs-4 control-label">Omit South of latitude</label>
-          <div class="col-xs-8 col-md-4">
+          <label class="col-xs-5 control-label">Omit South of latitude</label>
+          <div class="col-xs-7 col-md-4">
             <select class="form-control" name="south">
               {% for x in range(58, 49, -1) %}
               <option value="{{x}}" {{"selected" if values['south'] == x|string}}>{{x}}°</option>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<head>
+<head lang="en">
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,16 +24,16 @@
     <!-- Navigation tabs -->
     <div class="form-group">
       <ul class="nav nav-tabs" role="tablist">
-        <li role="presentaton" class="active">
+        <li role="presentation" class="active">
           <a href="#main" role="tab" data-toggle="tab">Main</a>
         </li>
-        <li role="presentaton">
+        <li role="presentation">
           <a href="#loa" role="tab" data-toggle="tab">LoA</a>
         </li>
-        <li role="presentaton">
+        <li role="presentation">
           <a href="#options" role="tab" data-toggle="tab">Options</a>
         </li>
-        <li role="presentaton">
+        <li role="presentation">
           <a href="#about" role="tab" data-toggle="tab">About</a>
         </li>
       </ul>
@@ -52,13 +52,11 @@
           <div class="col-xs-7">
             <label class="radio-inline">
               <input type="radio" name="{{x.name}}" value="{{x.value1}}" {{"checked" if values[x.name]==x.value1}}>
-                {{x.option1}}
-              </input>
+              {{x.option1}}
             </label>
             <label class="radio-inline">
               <input type="radio" name="{{x.name}}" value="{{x.value2}}" {{"checked" if values[x.name]==x.value2}}>
-                {{x.option2}}
-              </input>
+              {{x.option2}}
             </label>
           </div>
         </div>
@@ -149,7 +147,15 @@
 
       <!-- About tab -->
       <div role="tabpanel" class="tab-pane" id="about">
-        {{lipsum()}}
+        <h4>Notes</h4>
+        <p><strong>Non-ATZ.</strong> Non-ATZ airfields are those listed as
+        training aerodromes in section ENR 5.5 of the AIP. Note - many of the
+        smaller airfields shown on the 1:500000 chart are not listed in the
+        AIP and so are not included by this program.</p>
+        <p><strong>Ultralight Strips.</strong> Microlight strips are also
+        listed in ENR 5.5</p>
+        <p><strong>Obstacles.</strong> Only obstacles (mainly radio masts)
+        with a height of greater than 600' are included.</p>
       </div>
     </div>
 

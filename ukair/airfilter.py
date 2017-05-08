@@ -55,7 +55,7 @@ def filter_factory(values):
   def filter_f(feature, volume):
     # Local type
     localtype = feature.get('localtype')
-    for lt, v in [("NOATZ2", 'nonatz'), ("UL", 'microlight'),
+    for lt, v in [("NOATZ", 'nonatz'), ("UL", 'microlight'),
                   ("HIRTA", 'hirta'), ("GVS", 'gvs'), ("RTM", 'obstacle')]:
       if localtype == lt and values.get(v) == "exclude":
        return False
@@ -66,7 +66,7 @@ def filter_factory(values):
 
     # Wave and LoA
     if localtype == "GLIDER" and\
-       {"LOA", "NOSSR", "TRA"} & set(feature.get('rules')):
+       {"LOA", "NOSSR", "TRA"} & set(feature.get('rules', [])):
 
       if "id-" + feature['name'] not in values:
         return False

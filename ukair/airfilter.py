@@ -57,11 +57,11 @@ def filter_factory(values):
     localtype = feature.get('localtype')
     for lt, v in [("NOATZ2", 'nonatz'), ("UL", 'microlight'),
                   ("HIRTA", 'hirta'), ("GVS", 'gvs'), ("RTM", 'obstacle')]:
-      if localtype == lt and values[v] == "exclude":
+      if localtype == lt and values.get(v) == "exclude":
        return False
 
     if localtype == "GLIDER" and not feature.get('rules') and \
-       values['glider'] == "exclude":
+       values.get('glider') == "exclude":
       return False
 
     # Wave and LoA
@@ -79,10 +79,10 @@ def filter_factory(values):
 
     # Min/max latitude
     min_lat, max_lat = minmax_lat(volume)
-    if min_lat > int(values['north']):
+    if min_lat > int(values.get('north', 60)):
       return False
 
-    if max_lat < int(values['south']):
+    if max_lat < int(values.get('south', 50)):
       return False
 
     return True
@@ -124,12 +124,12 @@ def class_factory(values):
 
     # ATZ
     if typ == "ATZ":
-      if values['atz'] == "classd":
+      if values.get('atz') == "classd":
         return "D"
 
     # ILS Feather
     if localtype == "ILS":
-      if values['ils'] == "classd":
+      if values.get('ils') == "classd":
         return "D"
 
     # Radio advisory LoA

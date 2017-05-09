@@ -126,7 +126,7 @@ def do_boundary(openair, boundary):
   if 'line' in boundary[0] and 'line' in boundary[-1]:
     do_point(openair, boundary[0]['line'][0])
 
-# Convert to openair format
+# Convert to openair format (DOS line endings)
 def convert(airspace,
             ffunc=default_filter, nfunc=default_name, cfunc=default_class):
   openair = []
@@ -138,7 +138,7 @@ def convert(airspace,
         do_levels(openair, volume)
         do_boundary(openair, volume['boundary'])
 
-  return "\n".join(openair) + "\n"
+  return "\r\n".join(openair) + "\r\n"
 
 if __name__ == "__main__":
   import argparse

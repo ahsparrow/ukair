@@ -24,10 +24,14 @@ from . import airfilter
 from . import openair
 
 app = Flask(__name__)
+app.config.update(dict(
+  AIRSPACE_FILE=os.path.join(app.root_path, "data/airspace.json")
+))
+app.config.from_envvar("UKAIR_SETTINGS", silent=True)
 
 def get_airspace():
   if not hasattr(g, 'airspace'):
-    with open(os.path.join(app.root_path, "data/airspace.json")) as js:
+    with open(app.config['AIRSPACE_FILE']) as js:
       g.airspace = json.load(js)
 
   return g.airspace

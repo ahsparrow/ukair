@@ -138,7 +138,8 @@ def convert(airspace,
         do_levels(openair, volume)
         do_boundary(openair, volume['boundary'])
 
-  return "\r\n".join(openair) + "\r\n"
+  openair.append("")
+  return "\r\n".join(openair)
 
 if __name__ == "__main__":
   import argparse

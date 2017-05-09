@@ -111,7 +111,10 @@ def class_factory(values):
 
     # MATZ
     if localtype == "MATZ":
-      return "MATZ"
+      if values.get('format') == "seeyou":
+        return "CTR"
+      else:
+        return "MATZ"
 
     # TMZ
     rules = set(feature.get('rules', [])) | set(volume.get('rules', []))

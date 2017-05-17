@@ -19,9 +19,9 @@ import json
 import os
 
 from flask import Flask, g, make_response, render_template, request
+import yaixm
 
 from . import airfilter
-from . import openair
 
 app = Flask(__name__)
 app.config.update(dict(
@@ -64,12 +64,14 @@ def get_airac():
 @app.route("/", methods=['POST'])
 def download():
   values = request.form.to_dict()
-  str = openair.convert(get_airspace()['airspace'],
-                        ffunc=airfilter.filter_factory(values),
-                        cfunc=airfilter.class_factory(values))
+  openair = yaixm.openair(get_airspace()['airspace'],
+                          ffunc=airfilter.filter_factory(values),
+                          cfunc=airfilter.class_factory(values))
+  openair.append("")
+  openair = "\r\n".join(openair)
   filename = "uk%s.txt" % get_airac()
 
-  resp  = make_response(str.encode(encoding="ascii"))
+  resp  = make_response(openair.encode(encoding="ascii"))
   resp.headers['Content-Type'] = "text/plain"
   resp.headers['Content-Disposition'] = "attachment; filename=%s" % filename
   resp.set_cookie('values', json.dumps(values))

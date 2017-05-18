@@ -1,4 +1,5 @@
 *.pyc
+.cache
 __pycache__
-vendor
-venv
+tests
+venv*

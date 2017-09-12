@@ -2,18 +2,18 @@
 #
 # This file is part of ukair
 #
-# Airplot is free software: you can redistribute it and/or modify
+# ukair is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# Airplot is distributed in the hope that it will be useful,
+# ukair is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Airplot.  If not, see <http://www.gnu.org/licenses/>.
+# along with ukair.  If not, see <http://www.gnu.org/licenses/>.
 
 import json
 import os
@@ -29,18 +29,18 @@ app.config.update(dict(
 ))
 app.config.from_envvar("UKAIR_SETTINGS", silent=True)
 
+# Load airspace from file
 def get_airspace():
   if not hasattr(g, 'airspace'):
-    with open(app.config['AIRSPACE_FILE']) as js:
-      g.airspace = json.load(js)
+    with open(app.config['AIRSPACE_FILE']) as f:
+      g.airspace = yaixm.load(f)
 
   return g.airspace
 
 def get_loas():
   if not hasattr(g, 'loas'):
     airspace = get_airspace()
-    g.loas = [a['name'] for a in airspace['airspace']
-              if "LOA" in a.get('rules', [])]
+    g.loas = [a['name'] for a in airspace['loa']]
     g.loas.sort()
 
   return g.loas
@@ -100,6 +100,10 @@ def home():
     }
 
   choices = [
+      {'name': "glider", 'label': "Gliding Site",
+       'value1': "include", 'option1': "Include",
+       'value2': "exclude", 'option2': "Exclude"
+      },
       {'name': "nonatz", 'label': "Non-ATZ Airfield",
        'value1': "include", 'option1': "Include",
        'value2': "exclude", 'option2': "Exclude"
@@ -108,11 +112,7 @@ def home():
        'value1': "include", 'option1': "Include",
        'value2': "exclude", 'option2': "Exclude"
       },
-      {'name': "hirta", 'label': "HIRTA",
-       'value1': "include", 'option1': "Include",
-       'value2': "exclude", 'option2': "Exclude"
-      },
-      {'name': "gvs", 'label': "GVS",
+      {'name': "hirta", 'label': "HIRTA/GVS/LASER",
        'value1': "include", 'option1': "Include",
        'value2': "exclude", 'option2': "Exclude"
       },
@@ -120,23 +120,19 @@ def home():
        'value1': "include", 'option1': "Include",
        'value2': "exclude", 'option2': "Exclude"
       },
-      {'name': "glider", 'label': "Gliding Site",
-       'value1': "include", 'option1': "Include",
-       'value2': "exclude", 'option2': "Exclude"
-      },
       {'name': "atz", 'label': "ATZ",
        'value1': "classd", 'option1': "Class D",
-       'value2': "classg", 'option2': "Class G"
+       'value2': "classg", 'option2': "CTR"
       },
       {'name': "ils", 'label': "ILS Feather",
-       'value1': "classd", 'option1': "Class D",
+       'value1': "classd", 'option1': "As ATZ",
        'value2': "classg", 'option2': "Class G"
       }
   ]
 
   formats = [
-      {'name': "xcsoar", 'label': "XCSoar"},
-      {'name': "seeyou", 'label': "SeeYou"}
+      {'name': "openair", 'label': "OpenAir (recommended)"},
+      {'name': "tnp", 'label': "TNP"}
   ]
 
   release= "AIRAC: %s" % get_airac()

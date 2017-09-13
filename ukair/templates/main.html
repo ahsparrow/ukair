@@ -87,7 +87,7 @@
         {% for x in wave %}
           <div class="col-xs-6 checkbox">
             <label>
-              <input type="checkbox" name="id-{{x}}" value="" {{"checked" if ("id-" ~ x) in values}}> {{x}}
+              <input type="checkbox" name="wave-{{x}}" value="" {{"checked" if ("wave-" ~ x) in values}}> {{x}}
             </label>
           </div>
         {% endfor %}
@@ -98,7 +98,7 @@
         {% for x in loas %}
           <div class="col-xs-6 checkbox">
             <label>
-              <input type="checkbox" name="id-{{x}}" value="" {{"checked" if ("id-" ~ x) in values}}> {{x}}
+              <input type="checkbox" name="loa-{{x}}" value="" {{"checked" if ("loa-" ~ x) in values}}> {{x}}
             </label>
           </div>
         {% endfor %}

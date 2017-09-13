@@ -57,13 +57,14 @@ def get_wave():
 def get_airac():
   if not hasattr(g, 'airac'):
     airspace = get_airspace()
-    g.airac = airspace['header']['airac_date']
+    g.airac = airspace['release']['airac_date'][:10]
 
   return g.airac
 
 @app.route("/", methods=['POST'])
 def download():
   values = request.form.to_dict()
+  print(values)
   openair = yaixm.openair(get_airspace()['airspace'],
                           ffunc=airfilter.filter_factory(values),
                           cfunc=airfilter.class_factory(values))
@@ -87,16 +88,13 @@ def home():
         'nonatz': "include",
         'microlight': "exclude",
         'hirta': "exclude",
-        'gvs': "exclude",
         'obstacle': "exclude",
         'glider': "exclude",
         'atz': "classd",
         'ils': "classd",
         'format': "seeyou",
         'north': "59",
-        'south': "50",
-        'id-RAZ CAMBRIDGE': None,
-        'id-RAA GLASGOW STORNOWAY': None
+        'south': "50"
     }
 
   choices = [

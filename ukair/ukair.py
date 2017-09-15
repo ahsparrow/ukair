@@ -64,12 +64,17 @@ def get_airac():
 @app.route("/", methods=['POST'])
 def download():
   values = request.form.to_dict()
-  print(values)
-  openair = yaixm.openair(get_airspace()['airspace'],
-                          ffunc=airfilter.filter_factory(values),
-                          cfunc=airfilter.class_factory(values))
-  openair.append("")
-  openair = "\r\n".join(openair)
+
+  airfilter = yaixm.make_filter(
+        noatz=(values['nonatz'] == 'include'),
+        microlight=(values['microlight']=='include'),
+        hgl=(values['hirta']=='include'),
+        gliding_site=(values['glider']=='include'),
+        north=int(values['north']),
+        south=int(values['south']))
+  converter = yaixm.Openair(filter_func=airfilter)
+
+  openair = converter.convert(get_airspace()['airspace'])
   filename = "uk%s.txt" % get_airac()
 
   resp  = make_response(openair.encode(encoding="ascii"))

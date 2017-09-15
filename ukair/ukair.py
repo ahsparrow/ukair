@@ -72,12 +72,17 @@ def download():
         gliding_site=(values['glider']=='include'),
         north=int(values['north']),
         south=int(values['south']))
-  converter = yaixm.Openair(filter_func=airfilter)
 
-  openair = converter.convert(get_airspace()['airspace'])
-  filename = "uk%s.txt" % get_airac()
+  if values['format'] == "tnp":
+      converter = yaixm.Tnp(filter_func=airfilter)
+      filename = "uk%s.sua" % get_airac()
+  else:
+      converter = yaixm.Openair(filter_func=airfilter)
+      filename = "uk%s.txt" % get_airac()
 
-  resp  = make_response(openair.encode(encoding="ascii"))
+  data = converter.convert(get_airspace()['airspace'])
+
+  resp  = make_response(data.encode(encoding="ascii"))
   resp.headers['Content-Type'] = "text/plain"
   resp.headers['Content-Disposition'] = "attachment; filename=%s" % filename
   resp.set_cookie('values', json.dumps(values))

@@ -64,6 +64,7 @@ def get_airac():
 @app.route("/", methods=['POST'])
 def download():
   values = request.form.to_dict()
+  print(values)
 
   airfilter = yaixm.make_filter(
         noatz=(values['nonatz'] == 'include'),
@@ -71,7 +72,8 @@ def download():
         hgl=(values['hirta']=='include'),
         gliding_site=(values['glider']=='include'),
         north=int(values['north']),
-        south=int(values['south']))
+        south=int(values['south']),
+        max_level=10500 if 'fl105' in values else None)
 
   if values['format'] == "tnp":
       converter = yaixm.Tnp(filter_func=airfilter)

@@ -67,9 +67,9 @@ def download():
   print(values)
 
   airfilter = yaixm.make_filter(
-        noatz = values['nonatz'] == 'include',
+        noatz = values['noatz'] == 'include',
         microlight = values['microlight']=='include',
-        hgl = values['hirta']=='include',
+        hgl = values['hgl']=='include',
         gliding_site = values['glider']=='include',
         north = int(values['north']),
         south = int(values['south']),
@@ -101,9 +101,9 @@ def home():
     values = json.loads(request.cookies.get('values'))
   except TypeError:
     values = {
-        'nonatz': "include",
+        'noatz': "include",
         'microlight': "exclude",
-        'hirta': "exclude",
+        'hgl': "exclude",
         'obstacle': "exclude",
         'glider': "exclude",
         'atz': "classd",
@@ -118,7 +118,7 @@ def home():
        'value1': "include", 'option1': "Include",
        'value2': "exclude", 'option2': "Exclude"
       },
-      {'name': "nonatz", 'label': "Non-ATZ Airfield",
+      {'name': "noatz", 'label': "No-ATZ Airfield",
        'value1': "include", 'option1': "Include",
        'value2': "exclude", 'option2': "Exclude"
       },
@@ -126,7 +126,7 @@ def home():
        'value1': "include", 'option1': "Include",
        'value2': "exclude", 'option2': "Exclude"
       },
-      {'name': "hirta", 'label': "HIRTA/GVS/LASER",
+      {'name': "hgl", 'label': "HIRTA/GVS/LASER",
        'value1': "include", 'option1': "Include",
        'value2': "exclude", 'option2': "Exclude"
       },

@@ -25,48 +25,47 @@ from . import airfilter
 
 app = Flask(__name__)
 app.config.update(dict(
-  AIRSPACE_FILE=os.path.join(app.root_path, "data/airspace.json")
+    AIRSPACE_FILE=os.path.join(app.root_path, "data/airspace.json")
 ))
 app.config.from_envvar("UKAIR_SETTINGS", silent=True)
 
 # Load airspace from file
 def get_airspace():
-  if not hasattr(g, 'airspace'):
-    with open(app.config['AIRSPACE_FILE']) as f:
-      g.airspace = yaixm.load(f)
+    if not hasattr(g, 'airspace'):
+        with open(app.config['AIRSPACE_FILE']) as f:
+            g.airspace = yaixm.load(f)
 
-  return g.airspace
+    return g.airspace
 
 def get_loas():
-  if not hasattr(g, 'loas'):
-    airspace = get_airspace()
-    g.loas = [a['name'] for a in airspace['loa']]
-    g.loas.sort()
+    if not hasattr(g, 'loas'):
+        airspace = get_airspace()
+        g.loas = [a['name'] for a in airspace['loa']]
+        g.loas.sort()
 
-  return g.loas
+    return g.loas
 
 def get_wave():
-  if not hasattr(g, 'wave'):
-    airspace = get_airspace()
-    g.wave = [a['name'] for a in airspace['airspace']
-              if "TRA" in a.get('rules', []) or "NOSSR" in a.get('rules', [])]
-    g.wave.sort()
+    if not hasattr(g, 'wave'):
+        airspace = get_airspace()
+        g.wave = [a['name'] for a in airspace['airspace']
+                  if "TRA" in a.get('rules', []) or "NOSSR" in a.get('rules', [])]
+        g.wave.sort()
 
-  return g.wave
+    return g.wave
 
 def get_airac():
-  if not hasattr(g, 'airac'):
-    airspace = get_airspace()
-    g.airac = airspace['release']['airac_date'][:10]
+    if not hasattr(g, 'airac'):
+        airspace = get_airspace()
+        g.airac = airspace['release']['airac_date'][:10]
 
-  return g.airac
+    return g.airac
 
 @app.route("/", methods=['POST'])
 def download():
-  values = request.form.to_dict()
-  print(values)
+    values = request.form.to_dict()
 
-  airfilter = yaixm.make_filter(
+    airfilter = yaixm.make_filter(
         noatz = values['noatz'] == 'include',
         microlight = values['microlight']=='include',
         hgl = values['hgl']=='include',
@@ -75,88 +74,85 @@ def download():
         south = int(values['south']),
         max_level = 10500 if 'fl105' in values else None)
 
-  if values['format'] == "tnp":
-      converter = yaixm.Tnp(filter_func=airfilter)
-      filename = "uk%s.sua" % get_airac()
-  else:
-      atz = "CTR" if values['atz'] == "ctr" else "D"
-      type_func = yaixm.make_openair_type(
-            atz = atz,
-            ils = atz if values['ils'] == "atz" else "G")
-      converter = yaixm.Openair(filter_func=airfilter, type_func=type_func)
-      filename = "uk%s.txt" % get_airac()
+    if values['format'] == "tnp":
+        converter = yaixm.Tnp(filter_func=airfilter)
+        filename = "uk%s.sua" % get_airac()
+    else:
+        atz = "CTR" if values['atz'] == "ctr" else "D"
+        type_func = yaixm.make_openair_type(atz = atz,
+                ils = atz if values['ils'] == "atz" else "G")
+        converter = yaixm.Openair(filter_func=airfilter, type_func=type_func)
+        filename = "uk%s.txt" % get_airac()
 
-  data = converter.convert(get_airspace()['airspace'])
+    data = converter.convert(get_airspace()['airspace'])
 
-  resp  = make_response(data.encode(encoding="ascii"))
-  resp.headers['Content-Type'] = "text/plain"
-  resp.headers['Content-Disposition'] = "attachment; filename=%s" % filename
-  resp.set_cookie('values', json.dumps(values))
+    resp  = make_response(data.encode(encoding="ascii"))
+    resp.headers['Content-Type'] = "text/plain"
+    resp.headers['Content-Disposition'] = "attachment; filename=%s" % filename
+    resp.set_cookie('values', json.dumps(values))
 
-  return resp
+    return resp
 
 @app.route("/", methods=['GET'])
 def home():
-  try:
-    values = json.loads(request.cookies.get('values'))
-  except TypeError:
-    values = {
-        'noatz': "include",
-        'microlight': "exclude",
-        'hgl': "exclude",
-        'obstacle': "exclude",
-        'glider': "exclude",
-        'atz': "classd",
-        'ils': "classd",
-        'format': "seeyou",
-        'north': "59",
-        'south': "50"
-    }
+    try:
+        values = json.loads(request.cookies.get('values'))
+    except TypeError:
+        values = {
+            'noatz': "include",
+            'microlight': "exclude",
+            'hgl': "exclude",
+            'obstacle': "exclude",
+            'glider': "exclude",
+            'atz': "classd",
+            'ils': "classd",
+            'format': "seeyou",
+            'north': "59",
+            'south': "50"
+        }
 
-  choices = [
-      {'name': "glider", 'label': "Gliding Site",
-       'value1': "include", 'option1': "Include",
-       'value2': "exclude", 'option2': "Exclude"
-      },
-      {'name': "noatz", 'label': "No-ATZ Airfield",
-       'value1': "include", 'option1': "Include",
-       'value2': "exclude", 'option2': "Exclude"
-      },
-      {'name': "microlight", 'label': "Microlight Strip",
-       'value1': "include", 'option1': "Include",
-       'value2': "exclude", 'option2': "Exclude"
-      },
-      {'name': "hgl", 'label': "HIRTA/GVS/LASER",
-       'value1': "include", 'option1': "Include",
-       'value2': "exclude", 'option2': "Exclude"
-      },
-      {'name': "obstacle", 'label': "Obstacle",
-       'value1': "include", 'option1': "Include",
-       'value2': "exclude", 'option2': "Exclude"
-      },
-      {'name': "atz", 'label': "ATZ",
-       'value1': "classd", 'option1': "Class D",
-       'value2': "ctr", 'option2': "CTR"
-      },
-      {'name': "ils", 'label': "ILS Feather",
-       'value1': "atz", 'option1': "As ATZ",
-       'value2': "classg", 'option2': "Class G"
-      }
-  ]
+    choices = [
+        {'name': "glider", 'label': "Gliding Site",
+         'value1': "include", 'option1': "Include",
+         'value2': "exclude", 'option2': "Exclude"
+        },
+        {'name': "noatz", 'label': "No-ATZ Airfield",
+         'value1': "include", 'option1': "Include",
+         'value2': "exclude", 'option2': "Exclude"
+        },
+        {'name': "microlight", 'label': "Microlight Strip",
+         'value1': "include", 'option1': "Include",
+         'value2': "exclude", 'option2': "Exclude"
+        },
+        {'name': "hgl", 'label': "HIRTA/GVS/LASER",
+         'value1': "include", 'option1': "Include",
+         'value2': "exclude", 'option2': "Exclude"
+        },
+        {'name': "obstacle", 'label': "Obstacle",
+         'value1': "include", 'option1': "Include",
+         'value2': "exclude", 'option2': "Exclude"
+        },
+        {'name': "atz", 'label': "ATZ",
+         'value1': "classd", 'option1': "Class D",
+         'value2': "ctr", 'option2': "CTR"
+        },
+        {'name': "ils", 'label': "ILS Feather",
+         'value1': "atz", 'option1': "As ATZ",
+         'value2': "classg", 'option2': "Class G"
+        }
+    ]
 
-  formats = [
-      {'name': "openair", 'label': "OpenAir (recommended)"},
-      {'name': "tnp", 'label': "TNP"}
-  ]
+    formats = [{'name': "openair", 'label': "OpenAir (recommended)"},
+               {'name': "tnp", 'label': "TNP"}]
 
-  release= "AIRAC: %s" % get_airac()
+    release= "AIRAC: %s" % get_airac()
 
-  resp  = make_response(
-     render_template("main.html",
-                     values=values,
-                     release=release,
-                     choices=choices,
-                     formats=formats,
-                     wave=get_wave(),
-                     loas=get_loas()))
-  return resp
+    resp  = make_response(
+        render_template("main.html",
+                        values=values,
+                        release=release,
+                        choices=choices,
+                        formats=formats,
+                        wave=get_wave(),
+                        loas=get_loas()))
+    return resp

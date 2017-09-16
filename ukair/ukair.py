@@ -65,6 +65,14 @@ def get_airac():
 def download():
     values = request.form.to_dict()
 
+    # Get wave areas to be excluded
+    wave = get_wave()
+    include_wave = [v[5:] for v in values if v.startswith("wave-")]
+    for w in include_wave:
+        wave.remove(w)
+    exclude = [{'name': w, 'type': "D_OTHER"} for w in wave]
+    print(exclude)
+
     airfilter = yaixm.make_filter(
         noatz = values['noatz'] == 'include',
         microlight = values['microlight']=='include',
@@ -72,7 +80,8 @@ def download():
         gliding_site = values['glider']=='include',
         north = int(values['north']),
         south = int(values['south']),
-        max_level = 10500 if 'fl105' in values else None)
+        max_level = 10500 if 'fl105' in values else None,
+        exclude=exclude)
 
     if values['format'] == "tnp":
         converter = yaixm.Tnp(filter_func=airfilter)

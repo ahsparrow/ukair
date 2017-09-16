@@ -67,19 +67,23 @@ def download():
   print(values)
 
   airfilter = yaixm.make_filter(
-        noatz=(values['nonatz'] == 'include'),
-        microlight=(values['microlight']=='include'),
-        hgl=(values['hirta']=='include'),
-        gliding_site=(values['glider']=='include'),
-        north=int(values['north']),
-        south=int(values['south']),
-        max_level=10500 if 'fl105' in values else None)
+        noatz = values['nonatz'] == 'include',
+        microlight = values['microlight']=='include',
+        hgl = values['hirta']=='include',
+        gliding_site = values['glider']=='include',
+        north = int(values['north']),
+        south = int(values['south']),
+        max_level = 10500 if 'fl105' in values else None)
 
   if values['format'] == "tnp":
       converter = yaixm.Tnp(filter_func=airfilter)
       filename = "uk%s.sua" % get_airac()
   else:
-      converter = yaixm.Openair(filter_func=airfilter)
+      atz = "CTR" if values['atz'] == "ctr" else "D"
+      type_func = yaixm.make_openair_type(
+            atz = atz,
+            ils = atz if values['ils'] == "atz" else "G")
+      converter = yaixm.Openair(filter_func=airfilter, type_func=type_func)
       filename = "uk%s.txt" % get_airac()
 
   data = converter.convert(get_airspace()['airspace'])
@@ -132,10 +136,10 @@ def home():
       },
       {'name': "atz", 'label': "ATZ",
        'value1': "classd", 'option1': "Class D",
-       'value2': "classg", 'option2': "CTR"
+       'value2': "ctr", 'option2': "CTR"
       },
       {'name': "ils", 'label': "ILS Feather",
-       'value1': "classd", 'option1': "As ATZ",
+       'value1': "atz", 'option1': "As ATZ",
        'value2': "classg", 'option2': "Class G"
       }
   ]

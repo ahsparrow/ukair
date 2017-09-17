@@ -37,16 +37,16 @@ def get_yaixm():
 
 def get_loa():
     if not hasattr(g, 'loas'):
-        yaixm = get_yaixm()
-        g.loa = [a['name'] for a in yaixm['loa']]
+        yaixm_data = get_yaixm()
+        g.loa = [a['name'] for a in yaixm_data['loa']]
         g.loa.sort()
 
     return g.loa
 
 def get_wave():
     if not hasattr(g, 'wave'):
-        yaixm = get_yaixm()
-        g.wave = [a['name'] for a in yaixm['airspace']
+        yaixm_data = get_yaixm()
+        g.wave = [a['name'] for a in yaixm_data['airspace']
                   if "TRA" in a.get('rules', []) or "NOSSR" in a.get('rules', [])]
         g.wave.sort()
 
@@ -54,8 +54,8 @@ def get_wave():
 
 def get_airac():
     if not hasattr(g, 'airac'):
-        yaixm = get_yaixm()
-        g.airac = yaixm['release']['airac_date'][:10]
+        yaixm_data = get_yaixm()
+        g.airac = yaixm_data['release']['airac_date'][:10]
 
     return g.airac
 
@@ -64,10 +64,10 @@ def download():
     values = request.form.to_dict()
 
     # Merge LoA
-    yaixm = get_yaixm()
+    yaixm_data = get_yaixm()
     loa_names = [v[4:] for v in values if v.startswith("loa-")]
-    loa = [loa for loa in yaixm['loa'] if loa['name'] in loa_names]
-    airspace = yaixm.merge_loa(yaixm['airspace'], loa)
+    loa = [loa for loa in yaixm_data['loa'] if loa['name'] in loa_names]
+    airspace = yaixm.merge_loa(yaixm_data['airspace'], loa)
 
     # Get wave areas to be excluded
     wave = get_wave()

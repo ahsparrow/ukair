@@ -98,7 +98,10 @@ def download():
 
     data = converter.convert(airspace)
 
-    resp  = make_response(data.encode(encoding="ascii"))
+    # Convert to DOS format
+    dos_data = data.replace("\n", "\r\n") + "\r\n"
+
+    resp  = make_response(dos_data.encode(encoding="ascii"))
     resp.headers['Content-Type'] = "text/plain"
     resp.headers['Content-Disposition'] = "attachment; filename=%s" % filename
     resp.set_cookie('values', json.dumps(values))

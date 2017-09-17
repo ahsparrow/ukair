@@ -23,30 +23,30 @@ import yaixm
 
 app = Flask(__name__)
 app.config.update(dict(
-    AIRSPACE_FILE=os.path.join(app.root_path, "data/airspace.json")
+    YAIXM_FILE=os.path.join(app.root_path, "data/airspace.json")
 ))
 app.config.from_envvar("UKAIR_SETTINGS", silent=True)
 
-# Load airspace from file
-def get_airspace():
-    if not hasattr(g, 'airspace'):
-        with open(app.config['AIRSPACE_FILE']) as f:
-            g.airspace = yaixm.load(f)
+# Load YAIXM data from file
+def get_yaixm():
+    if not hasattr(g, 'yaixm'):
+        with open(app.config['YAIXM_FILE']) as f:
+            g.yaixm = yaixm.load(f)
 
-    return g.airspace
+    return g.yaixm
 
-def get_loas():
+def get_loa():
     if not hasattr(g, 'loas'):
-        airspace = get_airspace()
-        g.loas = [a['name'] for a in airspace['loa']]
-        g.loas.sort()
+        yaixm = get_yaixm()
+        g.loa = [a['name'] for a in yaixm['loa']]
+        g.loa.sort()
 
-    return g.loas
+    return g.loa
 
 def get_wave():
     if not hasattr(g, 'wave'):
-        airspace = get_airspace()
-        g.wave = [a['name'] for a in airspace['airspace']
+        yaixm = get_yaixm()
+        g.wave = [a['name'] for a in yaixm['airspace']
                   if "TRA" in a.get('rules', []) or "NOSSR" in a.get('rules', [])]
         g.wave.sort()
 
@@ -54,8 +54,8 @@ def get_wave():
 
 def get_airac():
     if not hasattr(g, 'airac'):
-        airspace = get_airspace()
-        g.airac = airspace['release']['airac_date'][:10]
+        yaixm = get_yaixm()
+        g.airac = yaixm['release']['airac_date'][:10]
 
     return g.airac
 
@@ -63,11 +63,11 @@ def get_airac():
 def download():
     values = request.form.to_dict()
 
-    # Merge LoAs
-    airspace = get_airspace()
+    # Merge LoA
+    yaixm = get_yaixm()
     loa_names = [v[4:] for v in values if v.startswith("loa-")]
-    loa = [loa for loa in airspace['loa'] if loa['name'] in loa_names]
-    airspace = yaixm.merge_loa(airspace['airspace'], loa)
+    loa = [loa for loa in yaixm['loa'] if loa['name'] in loa_names]
+    airspace = yaixm.merge_loa(yaixm['airspace'], loa)
 
     # Get wave areas to be excluded
     wave = get_wave()
@@ -166,5 +166,5 @@ def home():
                         choices=choices,
                         formats=formats,
                         wave=get_wave(),
-                        loas=get_loas()))
+                        loa=get_loa()))
     return resp

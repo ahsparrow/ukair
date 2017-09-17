@@ -80,7 +80,7 @@
       <!-- Wave boax and LoA tab -->
       <div role="tabpanel" class="tab-pane" id="loa">
 
-        <p class="lead">Wave Boxes and LoAs</p>
+        <p class="lead">Wave Boxes and LoA</p>
 
         <!-- Wave boxes -->
         <div class="form-group">
@@ -93,9 +93,9 @@
         {% endfor %}
         </div>
 
-        <!-- LoAs -->
+        <!-- LoA -->
         <div class="form-group">
-        {% for x in loas %}
+        {% for x in loa %}
           <div class="col-xs-6 checkbox">
             <label>
               <input type="checkbox" name="loa-{{x}}" value="" {{"checked" if ("loa-" ~ x) in values}}> {{x}}

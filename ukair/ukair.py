@@ -27,6 +27,17 @@ app.config.update(dict(
 ))
 app.config.from_envvar("UKAIR_SETTINGS", silent=True)
 
+DEFAULT_VALUES = {'noatz': "include",
+                  'microlight': "exclude",
+                  'hgl': "exclude",
+                  'obstacle': "exclude",
+                  'glider': "exclude",
+                  'atz': "classd",
+                  'ils': "classd",
+                  'format': "seeyou",
+                  'north': "59",
+                  'south': "50"}
+
 # Load YAIXM data from file
 def get_yaixm():
     if not hasattr(g, 'yaixm'):
@@ -112,19 +123,11 @@ def download():
 def home():
     try:
         values = json.loads(request.cookies.get('values'))
+        for v in DEFAULT_VALUES:
+            if v not in values:
+                values[v] = DEFAULT_VALUES[v]
     except TypeError:
-        values = {
-            'noatz': "include",
-            'microlight': "exclude",
-            'hgl': "exclude",
-            'obstacle': "exclude",
-            'glider': "exclude",
-            'atz': "classd",
-            'ils': "classd",
-            'format': "seeyou",
-            'north': "59",
-            'south': "50"
-        }
+        values = DEFAULT_VALUES
 
     choices = [
         {'name': "glider", 'label': "Gliding Site",

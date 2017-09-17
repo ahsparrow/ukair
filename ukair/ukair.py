@@ -21,8 +21,6 @@ import os
 from flask import Flask, g, make_response, render_template, request
 import yaixm
 
-from . import airfilter
-
 app = Flask(__name__)
 app.config.update(dict(
     AIRSPACE_FILE=os.path.join(app.root_path, "data/airspace.json")

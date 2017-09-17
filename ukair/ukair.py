@@ -65,13 +65,18 @@ def get_airac():
 def download():
     values = request.form.to_dict()
 
+    # Merge LoAs
+    airspace = get_airspace()
+    loa_names = [v[4:] for v in values if v.startswith("loa-")]
+    loa = [loa for loa in airspace['loa'] if loa['name'] in loa_names]
+    airspace = yaixm.merge_loa(airspace['airspace'], loa)
+
     # Get wave areas to be excluded
     wave = get_wave()
     include_wave = [v[5:] for v in values if v.startswith("wave-")]
     for w in include_wave:
         wave.remove(w)
     exclude = [{'name': w, 'type': "D_OTHER"} for w in wave]
-    print(exclude)
 
     airfilter = yaixm.make_filter(
         noatz = values['noatz'] == 'include',
@@ -93,7 +98,7 @@ def download():
         converter = yaixm.Openair(filter_func=airfilter, type_func=type_func)
         filename = "uk%s.txt" % get_airac()
 
-    data = converter.convert(get_airspace()['airspace'])
+    data = converter.convert(airspace)
 
     resp  = make_response(data.encode(encoding="ascii"))
     resp.headers['Content-Type'] = "text/plain"

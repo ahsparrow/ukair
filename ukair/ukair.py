@@ -139,25 +139,25 @@ def home():
         values = DEFAULT_VALUES
 
     choices = [
-        {'name': "glider", 'label': "Gliding Site",
-         'value1': "include", 'option1': "Include",
-         'value2': "exclude", 'option2': "Exclude"
-        },
         {'name': "noatz", 'label': "No-ATZ Airfield",
-         'value1': "include", 'option1': "Include",
-         'value2': "exclude", 'option2': "Exclude"
+         'value1': "exclude", 'option1': "Exclude",
+         'value2': "include", 'option2': "Include"
+        },
+        {'name': "glider", 'label': "Gliding Site",
+         'value1': "exclude", 'option1': "Exclude",
+         'value2': "include", 'option2': "Include"
         },
         {'name': "microlight", 'label': "Microlight Strip",
-         'value1': "include", 'option1': "Include",
-         'value2': "exclude", 'option2': "Exclude"
+         'value1': "exclude", 'option1': "Exclude",
+         'value2': "include", 'option2': "Include"
         },
         {'name': "hgl", 'label': "HIRTA/GVS/LASER",
-         'value1': "include", 'option1': "Include",
-         'value2': "exclude", 'option2': "Exclude"
+         'value1': "exclude", 'option1': "Exclude",
+         'value2': "include", 'option2': "Include"
         },
         {'name': "obstacle", 'label': "Obstacle",
-         'value1': "include", 'option1': "Include",
-         'value2': "exclude", 'option2': "Exclude"
+         'value1': "exclude", 'option1': "Exclude",
+         'value2': "include", 'option2': "Include"
         },
         {'name': "atz", 'label': "ATZ",
          'value1': "classd", 'option1': "Class D",

@@ -33,7 +33,7 @@ DEFAULT_VALUES = {'noatz': "include",
                   'obstacle': "exclude",
                   'glider': "exclude",
                   'atz': "classd",
-                  'ils': "classd",
+                  'ils': "atz",
                   'format': "seeyou",
                   'north': "59",
                   'south': "50"}
@@ -49,7 +49,7 @@ def get_yaixm():
 def get_loa():
     if not hasattr(g, 'loas'):
         yaixm_data = get_yaixm()
-        g.loa = [a['name'] for a in yaixm_data['loa']]
+        g.loa = [a['name'] for a in yaixm_data.get('loa', [])]
         g.loa.sort()
 
     return g.loa
@@ -77,7 +77,8 @@ def download():
     # Merge LoA
     yaixm_data = get_yaixm()
     loa_names = [v[4:] for v in values if v.startswith("loa-")]
-    loa = [loa for loa in yaixm_data['loa'] if loa['name'] in loa_names]
+    loa = [loa for loa in yaixm_data.get('loa', [])
+           if loa['name'] in loa_names]
     airspace = yaixm.merge_loa(yaixm_data['airspace'], loa)
 
     # Get wave areas to be excluded
@@ -87,6 +88,7 @@ def download():
         wave.remove(w)
     exclude = [{'name': w, 'type': "D_OTHER"} for w in wave]
 
+    # Define filter function
     airfilter = yaixm.make_filter(
         noatz = values['noatz'] == 'include',
         microlight = values['microlight']=='include',
@@ -97,6 +99,13 @@ def download():
         max_level = 10500 if 'fl105' in values else None,
         exclude=exclude)
 
+    # Get obstacles
+    if values['obstacle'] == "include":
+        obstacles = yaixm_data.get('obstacle', [])
+    else:
+        obstacles = []
+
+    # Convert to Openair/TNP
     if values['format'] == "tnp":
         converter = yaixm.Tnp(filter_func=airfilter)
         filename = "uk%s.sua" % get_airac()
@@ -107,7 +116,7 @@ def download():
         converter = yaixm.Openair(filter_func=airfilter, type_func=type_func)
         filename = "uk%s.txt" % get_airac()
 
-    data = converter.convert(airspace)
+    data = converter.convert(airspace, obstacles)
 
     # Convert to DOS format
     dos_data = data.replace("\n", "\r\n") + "\r\n"

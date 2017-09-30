@@ -22,9 +22,6 @@ from flask import Flask, g, make_response, render_template, request
 import yaixm
 
 app = Flask(__name__)
-app.config.update(dict(
-    YAIXM_FILE=os.path.join(app.root_path, "data/airspace.json")
-))
 app.config.from_envvar("UKAIR_SETTINGS", silent=True)
 
 DEFAULT_VALUES = {'noatz': "include",

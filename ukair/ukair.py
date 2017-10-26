@@ -21,8 +21,8 @@ import os
 from flask import Flask, g, make_response, render_template, request
 import yaixm
 
-app = Flask(__name__)
-app.config.from_envvar("UKAIR_SETTINGS", silent=True)
+application = Flask(__name__)
+application.config.from_envvar("UKAIR_SETTINGS", silent=True)
 
 DEFAULT_VALUES = {'noatz': "include",
                   'microlight': "exclude",
@@ -38,7 +38,7 @@ DEFAULT_VALUES = {'noatz': "include",
 # Load YAIXM data from file
 def get_yaixm():
     if not hasattr(g, 'yaixm'):
-        with open(app.config['YAIXM_FILE']) as f:
+        with open(application.config['YAIXM_FILE']) as f:
             g.yaixm = yaixm.load(f)
 
     return g.yaixm
@@ -67,7 +67,7 @@ def get_airac():
 
     return g.airac
 
-@app.route("/", methods=['POST'])
+@application.route("/", methods=['POST'])
 def download():
     values = request.form.to_dict()
 
@@ -125,7 +125,7 @@ def download():
 
     return resp
 
-@app.route("/", methods=['GET'])
+@application.route("/", methods=['GET'])
 def home():
     try:
         values = json.loads(request.cookies.get('values'))

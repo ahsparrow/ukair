@@ -1,0 +1,14 @@
+[Unit]
+Description="uWSGI instance to serve UKAIR app"
+After=network.target
+
+[Service]
+User=ukair
+Group=www-data
+RuntimeDirectory=uwsgi_ukair
+WorkingDirectory=/home/ukair/uwsgi_ukair
+Environment="UKAIR_SETTINGS=/home/ukair/ukair.cfg"
+ExecStart=/home/ukair/uwsgi_ukair/venv/bin/uwsgi --ini uwsgi_ukair.ini --virtualenv=/home/ukair/uwsgi_ukair/venv
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,10 @@
+server {
+    listen 80;
+
+    server_name ukair.freeflight.org.uk;
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass unix:/var/run/uwsgi_ukair/uwsgi.sock;
+    }
+}

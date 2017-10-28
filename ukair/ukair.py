@@ -18,12 +18,10 @@
 import json
 import os
 
-from flask import Flask, g, make_response, render_template, request
+from flask import Flask, make_response, render_template, request, current_app
 import yaixm
 
-application = Flask(__name__)
-application.config.from_envvar("UKAIR_SETTINGS", silent=True)
-
+# Default UI settings
 DEFAULT_VALUES = {'noatz': "include",
                   'microlight': "exclude",
                   'hgl': "exclude",
@@ -35,38 +33,45 @@ DEFAULT_VALUES = {'noatz': "include",
                   'north': "59",
                   'south': "50"}
 
-# Load YAIXM data from file
+# Create Flask application
+application = Flask(__name__)
+application.config.from_envvar("UKAIR_SETTINGS", silent=True)
+
+def init(app):
+    with open(app.config['YAIXM_FILE']) as f:
+        yaixm_data = yaixm.load(f)
+
+    loa_names = [a['name'] for a in yaixm_data.get('loa', [])]
+    loa_names.sort()
+
+    wave_names = [a['name'] for a in yaixm_data['airspace']
+            if "TRA" in a.get('rules', []) or "NOSSR" in a.get('rules', [])]
+    wave_names.sort()
+
+    airac_date = yaixm_data['release']['airac_date'][:10]
+
+    application.config['YAIXM_DATA'] = yaixm_data
+    application.config['LOA_NAMES'] = loa_names
+    application.config['WAVE_NAMES'] = wave_names
+    application.config['AIRAC_DATE'] = airac_date
+
+# Initialise the application
+init(application)
+
+# Data access functions
 def get_yaixm():
-    if not hasattr(g, 'yaixm'):
-        with open(application.config['YAIXM_FILE']) as f:
-            g.yaixm = yaixm.load(f)
+    return current_app.config['YAIXM_DATA']
 
-    return g.yaixm
+def get_loa_names():
+    return current_app.config['LOA_NAMES']
 
-def get_loa():
-    if not hasattr(g, 'loas'):
-        yaixm_data = get_yaixm()
-        g.loa = [a['name'] for a in yaixm_data.get('loa', [])]
-        g.loa.sort()
+def get_wave_names():
+    return current_app.config['WAVE_NAMES']
 
-    return g.loa
+def get_airac_date():
+    return current_app.config['AIRAC_DATE']
 
-def get_wave():
-    if not hasattr(g, 'wave'):
-        yaixm_data = get_yaixm()
-        g.wave = [a['name'] for a in yaixm_data['airspace']
-                  if "TRA" in a.get('rules', []) or "NOSSR" in a.get('rules', [])]
-        g.wave.sort()
-
-    return g.wave
-
-def get_airac():
-    if not hasattr(g, 'airac'):
-        yaixm_data = get_yaixm()
-        g.airac = yaixm_data['release']['airac_date'][:10]
-
-    return g.airac
-
+# Download response
 @application.route("/", methods=['POST'])
 def download():
     values = request.form.to_dict()
@@ -79,7 +84,7 @@ def download():
     airspace = yaixm.merge_loa(yaixm_data['airspace'], loa)
 
     # Get wave areas to be excluded
-    wave = get_wave()
+    wave = get_wave_names()
     include_wave = [v[5:] for v in values if v.startswith("wave-")]
     for w in include_wave:
         wave.remove(w)
@@ -105,13 +110,13 @@ def download():
     # Convert to Openair/TNP
     if values['format'] == "tnp":
         converter = yaixm.Tnp(filter_func=airfilter)
-        filename = "uk%s.sua" % get_airac()
+        filename = "uk%s.sua" % get_airac_date()
     else:
         atz = "CTR" if values['atz'] == "ctr" else "D"
         type_func = yaixm.make_openair_type(atz = atz,
                 ils = atz if values['ils'] == "atz" else "G")
         converter = yaixm.Openair(filter_func=airfilter, type_func=type_func)
-        filename = "uk%s.txt" % get_airac()
+        filename = "uk%s.txt" % get_airac_date()
 
     data = converter.convert(airspace, obstacles)
 
@@ -125,6 +130,7 @@ def download():
 
     return resp
 
+# Main web page response
 @application.route("/", methods=['GET'])
 def home():
     try:
@@ -169,7 +175,7 @@ def home():
     formats = [{'name': "openair", 'label': "OpenAir (recommended)"},
                {'name': "tnp", 'label': "TNP"}]
 
-    release= "AIRAC: %s" % get_airac()
+    release= "AIRAC: %s" % get_airac_date()
 
     resp  = make_response(
         render_template("main.html",
@@ -177,6 +183,6 @@ def home():
                         release=release,
                         choices=choices,
                         formats=formats,
-                        wave=get_wave(),
-                        loa=get_loa()))
+                        wave=get_wave_names(),
+                        loa=get_loa_names()))
     return resp

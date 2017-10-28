@@ -50,10 +50,10 @@ def init(app):
 
     airac_date = yaixm_data['release']['airac_date'][:10]
 
-    application.config['YAIXM_DATA'] = yaixm_data
-    application.config['LOA_NAMES'] = loa_names
-    application.config['WAVE_NAMES'] = wave_names
-    application.config['AIRAC_DATE'] = airac_date
+    app.config['YAIXM_DATA'] = yaixm_data
+    app.config['LOA_NAMES'] = loa_names
+    app.config['WAVE_NAMES'] = wave_names
+    app.config['AIRAC_DATE'] = airac_date
 
 # Initialise the application
 init(application)

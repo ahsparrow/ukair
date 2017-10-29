@@ -5,6 +5,6 @@ server {
 
     location / {
         include uwsgi_params;
-        uwsgi_pass unix:/var/run/uwsgi_ukair/uwsgi.sock;
+        uwsgi_pass unix:/run/ukair/uwsgi.sock;
     }
 }

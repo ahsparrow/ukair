@@ -16,7 +16,9 @@
 # along with ukair.  If not, see <http://www.gnu.org/licenses/>.
 
 import json
+import logging
 import os
+import sys
 
 from flask import Flask, make_response, render_template, request, current_app
 import yaixm
@@ -37,6 +39,24 @@ DEFAULT_VALUES = {'noatz': "include",
 application = Flask(__name__)
 application.config.from_envvar("UKAIR_SETTINGS", silent=True)
 
+# Configure logging
+logfile = application.config.get('APPLICATION_LOG_FILE')
+loglevel = application.config.get('APPLICATION_LOG_LEVEL', logging.INFO)
+
+logger = logging.getLogger("ukair")
+logger.setLevel(logging.DEBUG)
+
+if logfile:
+    ch = logging.FileHandler(logfile)
+else:
+    ch = logging.StreamHandler(sys.stderr)
+ch.setLevel(loglevel)
+
+formatter = logging.Formatter("%(levelname)s [%(asctime)s] %(message)s")
+ch.setFormatter(formatter)
+
+logger.addHandler(ch)
+
 def init(app):
     with open(app.config['YAIXM_FILE']) as f:
         yaixm_data = yaixm.load(f)
@@ -54,6 +74,8 @@ def init(app):
     app.config['LOA_NAMES'] = loa_names
     app.config['WAVE_NAMES'] = wave_names
     app.config['AIRAC_DATE'] = airac_date
+
+    logger.info("INIT AIRAC:%s" % airac_date)
 
 # Initialise the application
 init(application)
@@ -75,6 +97,7 @@ def get_airac_date():
 @application.route("/", methods=['POST'])
 def download():
     values = request.form.to_dict()
+    logger.info("POST %s %s" % (request.remote_addr, str(values)))
 
     # Merge LoA
     yaixm_data = get_yaixm()

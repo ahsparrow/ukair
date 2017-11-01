@@ -1,1 +1,1 @@
-from .ukair import application
+from .ukair import create_app

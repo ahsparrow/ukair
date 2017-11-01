@@ -1,4 +1,5 @@
-from ukair import application
+from ukair import create_app
 
 if __name__ == "__main__":
-    application.run()
+    app = create_app("UKAIR_CONFIG")
+    app.run()

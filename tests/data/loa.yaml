@@ -1,0 +1,41 @@
+loa:
+- name: CAMBRIDGE RAZ
+  areas:
+  - name: CAMBRIDGE RAZ
+    add:
+    - name: CAMBRIDGE RAZ
+      type: OTHER
+      localtype: RMZ
+      geometry:
+      - upper: FL100
+        lower: SFC
+        boundary:
+        - line:
+          - 521557N 0001606E
+          - 521937N 0002139E
+        - arc:
+            dir: cw
+            radius: 10 nm
+            centre: 521218N 0001030E
+            to: 521351N 0002635E
+        - line:
+          - 521304N 0001834E
+        - arc:
+            dir: cw
+            radius: 5 nm
+            centre: 521218N 0001030E
+            to: 520827N 0000521E
+        - line:
+          - 520434N 0000011E
+        - arc:
+            dir: cw
+            radius: 10 nm
+            centre: 521218N 0001030E
+            to: 520717N 0000337W
+        - line:
+          - 520948N 0000327E
+        - arc:
+            dir: cw
+            radius: 5 nm
+            centre: 521218N 0001030E
+            to: 521557N 0001606E

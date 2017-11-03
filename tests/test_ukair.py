@@ -2,9 +2,11 @@ import unittest
 
 import ukair
 
+CONFIG = {'YAIXM_FILE': "tests/data/airspace.json"}
+
 class TestCase(unittest.TestCase):
     def setUp(self):
-        self.app = ukair.create_app("UKAIR_CONFIG").test_client()
+        self.app = ukair.create_app(CONFIG).test_client()
 
     def test_get(self):
         rv = self.app.get("/")

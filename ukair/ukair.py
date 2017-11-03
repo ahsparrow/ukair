@@ -48,13 +48,22 @@ def register_blueprints(app):
         if hasattr(mod, 'bp'):
             app.register_blueprint(mod.bp)
 
-# Flask application factory
-def create_app(config_env):
+# Flask application factory. config argument is either a dictionary of
+# config values, or the name of the environment variable that points to
+# a config file.
+def create_app(config):
     app = Flask('ukair')
-    app.config.from_envvar(config_env, silent=True)
 
+    # Do configuration
+    if isinstance(config, dict):
+        app.config.update(config)
+    else:
+        app.config.from_envvar(config, silent=True)
+
+    # Set up logging
     init_logging(app)
 
+    # Load airspace data from YAML/JSON file
     with open(app.config['YAIXM_FILE']) as f:
         yaixm_data = yaixm.load(f)
 
@@ -73,6 +82,7 @@ def create_app(config_env):
     app.config['WAVE_NAMES'] = wave_names
     app.config['AIRAC_DATE'] = airac_date
 
+    # Set URL handlers
     register_blueprints(app)
 
     return app

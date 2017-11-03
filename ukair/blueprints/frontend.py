@@ -28,9 +28,12 @@ DEFAULT_VALUES = {'noatz': "include",
                   'glider': "exclude",
                   'atz': "classd",
                   'ils': "atz",
-                  'format': "seeyou",
+                  'format': "openair",
                   'north': "59",
                   'south': "50"}
+
+def get_value(values, item):
+    return values.get(item, DEFAULT_VALUES[item])
 
 @bp.route("/", methods=['POST'])
 def download():
@@ -53,29 +56,29 @@ def download():
 
     # Define filter function
     airfilter = yaixm.make_filter(
-        noatz = values['noatz'] == 'include',
-        microlight = values['microlight']=='include',
-        hgl = values['hgl']=='include',
-        gliding_site = values['glider']=='include',
-        north = int(values['north']),
-        south = int(values['south']),
+        noatz = get_value(values, 'noatz') == 'include',
+        microlight = get_value(values, 'microlight') == 'include',
+        hgl = get_value(values, 'hgl') == 'include',
+        gliding_site = get_value(values, 'glider') == 'include',
+        north = int(get_value(values, 'north')),
+        south = int(get_value(values, 'south')),
         max_level = 10500 if 'fl105' in values else None,
         exclude=exclude)
 
     # Get obstacles
-    if values['obstacle'] == "include":
+    if get_value(values, 'obstacle') == "include":
         obstacles = yaixm_data.get('obstacle', [])
     else:
         obstacles = []
 
     # Convert to Openair/TNP
-    if values['format'] == "tnp":
+    if get_value(values, 'format') == "tnp":
         converter = yaixm.Tnp(filter_func=airfilter)
         filename = "uk%s.sua" % get_airac_date(current_app)
     else:
-        atz = "CTR" if values['atz'] == "ctr" else "D"
-        type_func = yaixm.make_openair_type(atz = atz,
-                ils = atz if values['ils'] == "atz" else "G")
+        atz = "CTR" if get_value(values, 'atz') == "ctr" else "D"
+        type_func = yaixm.make_openair_type(atz=atz,
+                ils = atz if get_value(values, 'ils') == "atz" else "G")
         converter = yaixm.Openair(filter_func=airfilter, type_func=type_func)
         filename = "uk%s.txt" % get_airac_date(current_app)
 

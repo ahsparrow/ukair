@@ -1,4 +1,71 @@
 airspace:
+- name: BIGGIN HILL
+  type: OTHER
+  localtype: ILS
+  geometry:
+  - upper: 2599 ft
+    lower: SFC
+    boundary:
+    - line:
+      - 512209N 0000331E
+      - 512712N 0000657E
+      - 512650N 0000809E
+      - 512202N 0000353E
+
+- name: BOSCOME DOWN
+  type: ATZ
+  geometry:
+  - upper: 2407 ft
+    lower: SFC
+    boundary:
+    - circle:
+        radius: 2.5 nm
+        centre: 510911N 0014504W
+
+- name: CAMBRIDGE UNIVERSITY
+  type: D_OTHER
+  localtype: LASER
+  geometry:
+  - upper: FL660
+    lower: SFC
+    boundary:
+    - circle:
+        radius: 1 nm
+        centre: 521218N 0000712E
+
+- name: CLENCH COMMON
+  type: OTHER
+  localtype: UL
+  geometry:
+  - upper: 2623 ft
+    lower: SFC
+    boundary:
+    - circle:
+        radius: 0.5 nm
+        centre: 512314N 0014411W
+
+- name: EASTER
+  type: OTHER
+  localtype: NOATZ
+  geometry:
+  - upper: 2022 ft
+    lower: SFC
+    boundary:
+    - circle:
+        radius: 0.5 nm
+        centre: 574507N 0035620W
+
+- name: LASHAM
+  type: OTHER
+  localtype: GLIDER
+  geometry:
+  - upper: 3618 ft
+    lower: SFC
+    boundary:
+    - circle:
+        radius: 1 nm
+        centre: 511112N 0010155W
+
 - name: TRAG ABOYNE
   type: D_OTHER
   localtype: GLIDER
@@ -14,13 +81,3 @@ airspace:
       - 565301N 0030005W
       - 565730N 0031500W
 
-- name: LASHAM
-  type: OTHER
-  localtype: GLIDER
-  geometry:
-  - upper: 3618 ft
-    lower: SFC
-    boundary:
-    - circle:
-        radius: 1 nm
-        centre: 511112N 0010155W

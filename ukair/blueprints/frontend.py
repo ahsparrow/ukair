@@ -51,7 +51,8 @@ def download():
     wave = get_wave_names(current_app)
     include_wave = [v[5:] for v in values if v.startswith("wave-")]
     for w in include_wave:
-        wave.remove(w)
+        if w in wave:
+            wave.remove(w)
     exclude = [{'name': w, 'type': "D_OTHER"} for w in wave]
 
     # Define filter function

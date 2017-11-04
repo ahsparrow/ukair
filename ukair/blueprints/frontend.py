@@ -61,8 +61,8 @@ def download():
         microlight = get_value(values, 'microlight') == 'include',
         hgl = get_value(values, 'hgl') == 'include',
         gliding_site = get_value(values, 'glider') == 'include',
-        north = int(get_value(values, 'north')),
-        south = int(get_value(values, 'south')),
+        north = float(get_value(values, 'north')),
+        south = float(get_value(values, 'south')),
         max_level = 10500 if 'fl105' in values else None,
         exclude=exclude)
 
@@ -139,6 +139,17 @@ def home():
     formats = [{'name': "openair", 'label': "OpenAir (recommended)"},
                {'name': "tnp", 'label': "TNP"}]
 
+    norths = [{'value': "59", 'label': "None"},
+              {'value': "54.9", 'label': "Carlisle"},
+              {'value': "53.7", 'label': "Hull"},
+              {'value': "52.9", 'label': "Nottingham"}]
+
+    souths = [{'value': "49", 'label': "None"},
+              {'value': "51.8", 'label': "Oxford"},
+              {'value': "52.9", 'label': "Nottingham"},
+              {'value': "53.7", 'label': "Hull"},
+              {'value': "54.9", 'label': "Carlisle"}]
+
     release= "AIRAC: %s" % get_airac_date(current_app)
 
     resp  = make_response(
@@ -148,5 +159,7 @@ def home():
                         choices=choices,
                         formats=formats,
                         wave=get_wave_names(current_app),
-                        loa=get_loa_names(current_app)))
+                        loa=get_loa_names(current_app),
+                        norths=norths,
+                        souths=souths))
     return resp

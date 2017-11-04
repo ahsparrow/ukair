@@ -15,7 +15,7 @@ class TestCase(unittest.TestCase):
     def test_post_nodata(self):
         rv = self.app.post("/")
         # ATZ always included
-        assert b"BOSCOME DOWN ATZ" in rv.data
+        assert b"BOSCOMBE DOWN ATZ" in rv.data
         assert b"AC D" in rv.data
 
         # Gliding sites excluded
@@ -78,6 +78,20 @@ class TestCase(unittest.TestCase):
     def test_fl105_exclude(self):
         rv = self.app.post("/", data={'fl105': "", 'wave-TRAG ABOYNE': ""})
         assert b"TRAG ABOYNE" not in rv.data
+
+    def test_north_filter(self):
+        rv = self.app.post("/", data={'north': "54", 'wave-TRAG ABOYNE': ""})
+        assert b"TRAG ABOYNE" not in rv.data
+
+    def test_south_filter(self):
+        rv = self.app.post("/", data={'south': "54"})
+        assert b"BOSCOMBE DOWN ATZ" not in rv.data
+
+    def test_northsouth_null_filter(self):
+        rv = self.app.post("/", data={'north': "59", 'south': "48",
+                                      'wave-TRAG ABOYNE': ""})
+        assert b"BOSCOMBE DOWN ATZ" in rv.data
+        assert b"TRAG ABOYNE" in rv.data
 
 if __name__ == "__main__":
     unittest.main()

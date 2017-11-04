@@ -12,7 +12,7 @@ airspace:
       - 512650N 0000809E
       - 512202N 0000353E
 
-- name: BOSCOME DOWN
+- name: BOSCOMBE DOWN
   type: ATZ
   geometry:
   - upper: 2407 ft

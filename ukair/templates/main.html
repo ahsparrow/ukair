@@ -124,21 +124,22 @@
 
         <!-- Latitude max/min -->
         <div class="form-group row">
-          <label class="col-xs-5 control-label">Omit North of latitude</label>
+          <label class="col-xs-5 control-label">Omit North of</label>
           <div class="col-xs-7 col-md-4">
             <select class="form-control" name="north">
-              {% for x in range(59, 50, -1) %}
-              <option value="{{x}}" {{"selected" if values['north'] == x|string}}>{{x}}°</option>
+              {% for lat in norths %}
+              <option value="{{lat['value']}}" {{"selected" if values['north'] == lat['value']}}>{{lat.label}}</option>
               {% endfor %}
             </select>
           </div>
         </div>
+
         <div class="form-group row">
-          <label class="col-xs-5 control-label">Omit South of latitude</label>
+          <label class="col-xs-5 control-label">Omit South of</label>
           <div class="col-xs-7 col-md-4">
             <select class="form-control" name="south">
-              {% for x in range(58, 49, -1) %}
-              <option value="{{x}}" {{"selected" if values['south'] == x|string}}>{{x}}°</option>
+              {% for lat in souths %}
+              <option value="{{lat['value']}}" {{"selected" if values['south'] == lat['value']}}>{{lat.label}}</option>
               {% endfor %}
             </select>
           </div>

@@ -1,10 +1,19 @@
 server {
     listen 80;
+    listen 443 ssl;
 
-    server_name ukair.freeflight.org.uk;
+    server_name asselect.uk www.asselect.uk;
 
     location / {
+        root /srv/www/asselect.uk/static;
+        try_files $uri @ukair;
+    }
+
+    location @ukair {
         include uwsgi_params;
         uwsgi_pass unix:/run/ukair/uwsgi.sock;
     }
+
+    ssl_certificate /etc/letsencrypt/live/asselect.uk/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/asselect.uk/privkey.pem;
 }

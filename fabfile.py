@@ -2,7 +2,7 @@ from __future__ import with_statement
 
 import os.path
 
-from fabric.api import cd, env, prefix, run, sudo, task
+from fabric.api import cd, env, local, prefix, put, run, sudo, task
 from fabric.contrib.files import exists
 
 def init_deploy(base_dir):
@@ -50,4 +50,9 @@ def deploy():
     with cd(code_dir):
         run("git pull")
 
-    #sudo("systemctl restart ukair_uwsgi.service")
+    sudo("systemctl restart ukair_uwsgi.service")
+
+@task
+def upload(filename):
+    put(filename, "/var/ukair/yaixm.json")
+    sudo("systemctl restart ukair_wsgi.service")

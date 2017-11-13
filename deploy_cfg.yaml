@@ -1,5 +1,5 @@
 flask:
-    YAIXM_FILE: /home/ahs/airspace/yaixm/yaixm.json
+    YAIXM_FILE: /var/ukair/yaixm.json
 
     logging:
         version: 1
@@ -13,7 +13,7 @@ flask:
                 class: logging.handlers.RotatingFileHandler
                 level: DEBUG
                 formatter: default
-                filename: flask.txt
+                filename: /var/ukair/flask.txt
                 maxBytes: 1000000
                 backupCount: 5
 

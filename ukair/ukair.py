@@ -33,6 +33,37 @@ def register_blueprints(app):
         if hasattr(mod, 'bp'):
             app.register_blueprint(mod.bp)
 
+def load_yaixm(app):
+    # Load airspace data from YAML/JSON file
+    yaixm_file = app.config['YAIXM_FILE']
+    try:
+        with open(yaixm_file) as f:
+            try:
+                yaixm_data = yaixm.load(f)
+            except yaml.YAMLError:
+                logger.error("Can't parse YAIXM file %s" % yaixm_file)
+                app.config['YAIXM_DATA'] = None
+                return
+    except FileNotFoundError:
+        logger.error("YAIXM file %s doesn't exist" % yaixm_file)
+        app.config['YAIXM_DATA'] = None
+        return
+
+    loa_names = [a['name'] for a in yaixm_data.get('loa', [])]
+    loa_names.sort()
+
+    wave_names = [a['name'] for a in yaixm_data['airspace']
+            if "TRA" in a.get('rules', []) or "NOSSR" in a.get('rules', [])]
+    wave_names.sort()
+
+    airac_date = yaixm_data['release']['airac_date'][:10]
+    logger.info("AIRAC %s" % airac_date)
+
+    app.config['YAIXM_DATA'] = yaixm_data
+    app.config['LOA_NAMES'] = loa_names
+    app.config['WAVE_NAMES'] = wave_names
+    app.config['AIRAC_DATE'] = airac_date
+
 # Flask application factory. config argument is either a dictionary of
 # config values, or the name of the environment variable that points to
 # a YAML config file.
@@ -50,26 +81,10 @@ def create_app(config):
 
     logging.config.dictConfig(config_dict.get('logging', {'version': 1}))
 
-    # Load airspace data from YAML/JSON file
-    with open(app.config['YAIXM_FILE']) as f:
-        yaixm_data = yaixm.load(f)
-
-    loa_names = [a['name'] for a in yaixm_data.get('loa', [])]
-    loa_names.sort()
-
-    wave_names = [a['name'] for a in yaixm_data['airspace']
-            if "TRA" in a.get('rules', []) or "NOSSR" in a.get('rules', [])]
-    wave_names.sort()
-
-    airac_date = yaixm_data['release']['airac_date'][:10]
-    logger.info("AIRAC %s" % airac_date)
-
-    app.config['YAIXM_DATA'] = yaixm_data
-    app.config['LOA_NAMES'] = loa_names
-    app.config['WAVE_NAMES'] = wave_names
-    app.config['AIRAC_DATE'] = airac_date
-
     # Set URL handlers
     register_blueprints(app)
+
+    # Load YAIXM airspace, etc. data
+    load_yaixm(app)
 
     return app

@@ -97,6 +97,10 @@ def download():
 
 @bp.route("/", methods=['GET'])
 def home():
+    if current_app.config['YAIXM_DATA'] is None:
+        resp = make_response(render_template("error.html", error="Bad YAIXM data!"))
+        return resp
+
     try:
         values = json.loads(request.cookies.get('values'))
         for v in DEFAULT_VALUES:

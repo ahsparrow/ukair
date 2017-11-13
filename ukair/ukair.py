@@ -16,30 +16,15 @@
 # along with ukair.  If not, see <http://www.gnu.org/licenses/>.
 
 import json
-import logging
-import sys
+import logging, logging.config
+import os
 
 from flask import Flask
 from werkzeug.utils import find_modules, import_string
 import yaixm
+import yaml
 
 logger = logging.getLogger('ukair')
-
-# Logging setup
-def init_logging(app):
-    loglevel = app.config.get('APPLICATION_LOG_LEVEL', logging.INFO)
-    logger.setLevel(loglevel)
-
-    logfile = app.config.get('APPLICATION_LOG_FILE', None)
-    if logfile:
-        ch = logging.FileHandler(logfile)
-    else:
-        ch = logging.StreamHandler(sys.stderr)
-
-    formatter = logging.Formatter("%(levelname)s [%(asctime)s] %(message)s")
-    ch.setFormatter(formatter)
-
-    logger.addHandler(ch)
 
 # Get page definition blueprints
 def register_blueprints(app):
@@ -50,18 +35,20 @@ def register_blueprints(app):
 
 # Flask application factory. config argument is either a dictionary of
 # config values, or the name of the environment variable that points to
-# a config file.
+# a YAML config file.
 def create_app(config):
     app = Flask('ukair')
 
-    # Do configuration
-    if isinstance(config, dict):
-        app.config.update(config)
-    else:
-        app.config.from_envvar(config, silent=True)
+    # Load config from YAML file
+    if isinstance(config, str):
+        with open(os.getenv(config)) as cf:
+            config = yaml.load(cf)
 
-    # Set up logging
-    init_logging(app)
+    # Configure app and logging
+    config_dict = config['flask']
+    app.config.from_mapping(config_dict)
+
+    logging.config.dictConfig(config_dict.get('logging', {'version': 1}))
 
     # Load airspace data from YAML/JSON file
     with open(app.config['YAIXM_FILE']) as f:

@@ -2,7 +2,7 @@ import unittest
 
 import ukair
 
-CONFIG = {'YAIXM_FILE': "tests/data/airspace.json"}
+CONFIG = {'flask': {'YAIXM_FILE': "tests/data/airspace.json"}}
 
 class TestCase(unittest.TestCase):
     def setUp(self):

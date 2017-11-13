@@ -1,0 +1,41 @@
+flask:
+    YAIXM_FILE: /home/ahs/airspace/yaixm/yaixm.json
+
+    logging:
+        version: 1
+
+        formatters:
+            default:
+                format: "%(levelname)s [%(asctime)s] %(message)s"
+
+        handlers:
+            file:
+                class: logging.handlers.RotatingFileHandler
+                level: DEBUG
+                formatter: default
+                filename: flask.txt
+                maxBytes: 1000000
+                backupCount: 5
+
+        loggers:
+            ukair:
+                level: DEBUG
+
+        root:
+            handlers: [file]
+            level: INFO
+
+uwsgi:
+    module: wsgi
+
+    master: true
+    processes: 2
+
+    socket: /run/ukair/uwsgi.sock
+    chmod-socket: 660
+    vacuum: true
+
+    logto: /var/ukair/uwsgi.txt
+    log-maxsize: 2000000
+
+    die-on-term: true

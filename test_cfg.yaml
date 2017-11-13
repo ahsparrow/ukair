@@ -1,0 +1,24 @@
+flask:
+    YAIXM_FILE: /home/ahs/airspace/yaixm/yaixm.json
+
+    logging:
+        version: 1
+
+        formatters:
+            default:
+                format: "%(levelname)s [%(asctime)s] %(message)s"
+
+        handlers:
+            console:
+                class: logging.StreamHandler
+                level: DEBUG
+                stream: ext://sys.stderr
+                formatter: default
+
+        loggers:
+            ukair:
+                level: DEBUG
+
+        root:
+            handlers: [console]
+            level: DEBUG

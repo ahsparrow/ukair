@@ -7,8 +7,8 @@ User=ukair
 Group=www-data
 RuntimeDirectory=ukair
 WorkingDirectory=/srv/www/asselect.uk/ukair
-Environment="UKAIR_CONFIG=/srv/www/asselect.uk/ukair/deploy.cfg"
-ExecStart=/srv/www/asselect.uk/ukair/venv/bin/uwsgi --ini uwsgi.ini --virtualenv=/srv/www/asselect.uk/ukair/venv
+Environment="UKAIR_CONFIG=/srv/www/asselect.uk/ukair/deploy_cfg.yaml"
+ExecStart=/srv/www/asselect.uk/ukair/venv/bin/uwsgi --yaml deploy_cfg.yaml --virtualenv=/srv/www/asselect.uk/ukair/venv
 
 [Install]
 WantedBy=multi-user.target

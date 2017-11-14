@@ -1,5 +1,5 @@
 flask:
-    YAIXM_FILE: /home/ahs/airspace/yaixm/yaixm.json
+    YAIXM_FILE: yaixm.json
 
     logging:
         version: 1

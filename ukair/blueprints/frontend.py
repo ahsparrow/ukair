@@ -17,6 +17,9 @@ def get_loa_names(app):
 def get_wave_names(app):
     return app.config['WAVE_NAMES']
 
+def get_rat_names(app):
+    return app.config['RAT_NAMES']
+
 def get_airac_date(app):
     return app.config['AIRAC_DATE']
 
@@ -46,6 +49,12 @@ def download():
     loa = [loa for loa in yaixm_data.get('loa', [])
            if loa['name'] in loa_names]
     airspace = yaixm.merge_loa(yaixm_data['airspace'], loa)
+
+    # Add RA(T)s
+    rat_names = [v[4:] for v in values if v.startswith("rat-")]
+    rats = [rat for rat in yaixm_data.get('rat', [])
+            if rat['name'] in rat_names]
+    airspace.extend(rats)
 
     # Get wave areas to be excluded
     wave = get_wave_names(current_app)
@@ -164,6 +173,7 @@ def home():
                         formats=formats,
                         wave=get_wave_names(current_app),
                         loa=get_loa_names(current_app),
+                        rat=get_rat_names(current_app),
                         norths=norths,
                         souths=souths))
     return resp

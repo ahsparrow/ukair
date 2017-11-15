@@ -56,12 +56,15 @@ def load_yaixm(app):
             if "TRA" in a.get('rules', []) or "NOSSR" in a.get('rules', [])]
     wave_names.sort()
 
+    rat_names = [rat['name'] for rat in yaixm_data.get('rat', [])]
+
     airac_date = yaixm_data['release']['airac_date'][:10]
     logger.info("AIRAC %s" % airac_date)
 
     app.config['YAIXM_DATA'] = yaixm_data
     app.config['LOA_NAMES'] = loa_names
     app.config['WAVE_NAMES'] = wave_names
+    app.config['RAT_NAMES'] = rat_names
     app.config['AIRAC_DATE'] = airac_date
 
 # Flask application factory. config argument is either a dictionary of

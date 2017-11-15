@@ -93,5 +93,9 @@ class TestCase(unittest.TestCase):
         assert b"BOSCOMBE DOWN ATZ" in rv.data
         assert b"TRAG ABOYNE" in rv.data
 
+    def test_rat(self):
+        rv = self.app.post("/", data={'rat-TEST RAT': ""})
+        assert b"TEST RAT" in rv.data
+
 if __name__ == "__main__":
     unittest.main()

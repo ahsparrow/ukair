@@ -81,3 +81,25 @@ airspace:
       - 565301N 0030005W
       - 565730N 0031500W
 
+rat:
+- name: TEST RAT
+  type: OTHER
+  localtype: RAT
+  geometry:
+  - upper: 3618 ft
+    lower: SFC
+    boundary:
+    - circle:
+        radius: 5 nm
+        centre: 511112N 0010155W
+
+obstacle:
+- elevation: 1508 ft
+  id: UK0150A059F
+  position: 581941N 0032217W
+  type: RTM
+
+release:
+  airac_date: 2018-01-01T00:00:00Z
+  schema_version: 1
+  timestamp: 2017-11-15T17:26:09Z

@@ -32,6 +32,9 @@
           <a href="#loa" role="tab" data-toggle="tab">LoA</a>
         </li>
         <li role="presentation">
+          <a href="#rat" role="tab" data-toggle="tab">RA(T)</a>
+        </li>
+        <li role="presentation">
           <a href="#options" role="tab" data-toggle="tab">Options</a>
         </li>
         <li role="presentation">
@@ -104,6 +107,23 @@
         {% endfor %}
         </div>
 
+      </div>
+
+      <!-- RAT tab -->
+      <div role="tabpanel" class="tab-pane" id="rat">
+        <p class="lead">Temporary Airspace Restrictions</p>
+
+        {% for x in rat %}
+        <div class="form-group">
+          <div class="col-xs-6 checkbox">
+            <label>
+              <input type="checkbox" name="rat-{{x}}" value="" {{"checked" if ("rat-" ~ x) in values}}> {{x}}
+            </label>
+          </div>
+        </div>
+        {% else %}
+        <p>No RA(T)s are currently published.</p>
+        {% endfor %}
       </div>
 
       <!-- Option tab -->

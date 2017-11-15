@@ -131,11 +131,11 @@ def home():
          'value1': "exclude", 'option1': "Exclude",
          'value2': "include", 'option2': "Include"
         },
-        {'name': "hgl", 'label': "HIRTA/GVS/LASER",
+        {'name': "obstacle", 'label': "Obstacle",
          'value1': "exclude", 'option1': "Exclude",
          'value2': "include", 'option2': "Include"
         },
-        {'name': "obstacle", 'label': "Obstacle",
+        {'name': "hgl", 'label': "HIRTA/GVS/LASER",
          'value1': "exclude", 'option1': "Exclude",
          'value2': "include", 'option2': "Include"
         },

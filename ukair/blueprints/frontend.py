@@ -1,5 +1,7 @@
+from datetime import datetime
 import logging
 import json
+from textwrap import TextWrapper
 
 from flask import Blueprint, make_response, render_template, request, current_app
 import yaixm
@@ -23,8 +25,8 @@ def get_rat_names(app):
 def get_airac_date(app):
     return app.config['AIRAC_DATE']
 
-def get_header(app):
-    return app.config['YAIXM_DATA']['release'].get('note')
+def get_release_header(app):
+    return app.config['YAIXM_DATA']['release'].get('note', "")
 
 # Default UI settings
 DEFAULT_VALUES = {'noatz': "include",
@@ -86,6 +88,17 @@ def download():
 
     # File header
     header = current_app.config['HEADER']
+
+    # Release header
+    header += "\nAIRAC: {}\n".format(get_airac_date(current_app))
+    header += get_release_header(current_app)
+
+    # Diagnostic header
+    header += "\nProduced by asselect.uk: {}\n".format(
+            datetime.utcnow().isoformat())
+
+    wrapper = TextWrapper(width=70, subsequent_indent="           ")
+    header += wrapper.fill("Settings: {}".format(str(values)))
 
     # Convert to Openair/TNP
     if get_value(values, 'format') == "tnp":

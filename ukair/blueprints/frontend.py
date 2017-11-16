@@ -23,6 +23,9 @@ def get_rat_names(app):
 def get_airac_date(app):
     return app.config['AIRAC_DATE']
 
+def get_header(app):
+    return app.config['YAIXM_DATA']['release'].get('note')
+
 # Default UI settings
 DEFAULT_VALUES = {'noatz': "include",
                   'microlight': "exclude",
@@ -81,15 +84,19 @@ def download():
     else:
         obstacles = []
 
+    # File header
+    header = current_app.config['HEADER']
+
     # Convert to Openair/TNP
     if get_value(values, 'format') == "tnp":
-        converter = yaixm.Tnp(filter_func=airfilter)
+        converter = yaixm.Tnp(filter_func=airfilter, header=header)
         filename = "uk%s.sua" % get_airac_date(current_app)
     else:
         atz = "CTR" if get_value(values, 'atz') == "ctr" else "D"
         type_func = yaixm.make_openair_type(atz=atz,
                 ils = atz if get_value(values, 'ils') == "atz" else "G")
-        converter = yaixm.Openair(filter_func=airfilter, type_func=type_func)
+        converter = yaixm.Openair(filter_func=airfilter, type_func=type_func,
+                                  header=header)
         filename = "uk%s.txt" % get_airac_date(current_app)
 
     data = converter.convert(airspace, obstacles)

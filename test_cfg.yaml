@@ -1,24 +1,30 @@
 flask:
     YAIXM_FILE: yaixm.json
 
+    HEADER: |
+        UK Airspace
+        Alan Sparrow (airspace@asselect.uk)
+
+        To the extent possible under law, Alan Sparrow has waived all copyright
+        and related or neighboring rights to this file. The data in this file
+        is based on the work of others including: George Knight, Geoff Brown,
+        Peter Desmond and Rory O'Connor.  The data is originally sourced from
+        the UK Aeronautical Information Package (AIP).
+
     logging:
         version: 1
-
         formatters:
             default:
                 format: "%(levelname)s [%(asctime)s] %(message)s"
-
         handlers:
             console:
                 class: logging.StreamHandler
                 level: DEBUG
                 stream: ext://sys.stderr
                 formatter: default
-
         loggers:
             ukair:
                 level: DEBUG
-
         root:
             handlers: [console]
             level: DEBUG

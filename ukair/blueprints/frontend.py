@@ -104,7 +104,7 @@ def download():
         obstacles = []
 
     # File header
-    header = current_app.config['HEADER']
+    header = current_app.config.get('HEADER', "")
 
     # Release header
     header += "\nAIRAC: {}\n".format(get_airac_date(current_app))

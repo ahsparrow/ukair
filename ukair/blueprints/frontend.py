@@ -117,14 +117,25 @@ def download():
     wrapper = TextWrapper(width=70, subsequent_indent="           ")
     header += wrapper.fill("Settings: {}".format(str(values)))
 
-    # Convert to Openair/TNP
+    # Airspace convert
     if get_value(values, 'format') == "tnp":
-        converter = yaixm.Tnp(filter_func=airfilter, header=header)
+        # TNP
+        atz_class = "D" if get_value(values, 'atz') == "classd" else None
+        ils_class = atz_class if get_value(values, 'ils') == "atz" else "G"
+        class_func = yaixm.make_tnp_class(atz_class, ils_class)
+
+        ils_type = "CTA/CTR" if get_value(values, 'ils') == "atz" else "OTHER"
+        type_func = yaixm.make_tnp_type(ils_type)
+
+        converter = yaixm.Tnp(filter_func=airfilter, header=header,
+                              class_func=class_func, type_func=type_func)
         filename = "uk%s.sua" % get_airac_date(current_app)
     else:
+        # Openair
         atz = "CTR" if get_value(values, 'atz') == "ctr" else "D"
-        type_func = yaixm.make_openair_type(atz=atz,
-                ils = atz if get_value(values, 'ils') == "atz" else "G")
+        ils = atz if get_value(values, 'ils') == "atz" else "G"
+        type_func = yaixm.make_openair_type(atz=atz, ils=ils)
+
         converter = yaixm.Openair(filter_func=airfilter, type_func=type_func,
                                   header=header)
         filename = "uk%s.txt" % get_airac_date(current_app)

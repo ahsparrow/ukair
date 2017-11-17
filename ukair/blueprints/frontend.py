@@ -107,11 +107,12 @@ def download():
     header = current_app.config.get('HEADER', "")
 
     # Release header
-    header += "\nAIRAC: {}\n".format(get_airac_date(current_app))
+    header += "\n"
     header += get_release_header(current_app)
 
     # Diagnostic header
-    header += "\nProduced by asselect.uk: {}\n".format(
+    header += "\nAIRAC: {}\n".format(get_airac_date(current_app))
+    header += "Produced by asselect.uk: {}\n".format(
             datetime.utcnow().isoformat())
 
     wrapper = TextWrapper(width=70, subsequent_indent="           ")

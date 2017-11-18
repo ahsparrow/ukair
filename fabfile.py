@@ -67,7 +67,7 @@ def deploy():
     with cd(code_dir):
         run("git pull")
 
-    sudo("systemctl restart ukair_uwsgi.service")
+    sudo("systemctl restart ukair_wsgi.service")
 
 @task
 def upload(filename):

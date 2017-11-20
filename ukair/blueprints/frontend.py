@@ -191,7 +191,7 @@ def home():
         },
         {'name': "atz", 'label': "ATZ",
          'value1': "classd", 'option1': "Class D",
-         'value2': "ctr", 'option2': "CTR"
+         'value2': "ctr", 'option2': "Control Zone"
         },
         {'name': "ils", 'label': "ILS Feather",
          'value1': "atz", 'option1': "As ATZ",

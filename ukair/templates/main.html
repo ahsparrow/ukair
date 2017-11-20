@@ -3,73 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <title>UK Airspace Select</title>
 
-  <link rel="stylesheet"
-        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-        crossorigin="anonymous">
-  <link rel="stylesheet"
-        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-        integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
-        crossorigin="anonymous">
   <link href="static/css/custom.css" rel="stylesheet">
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+        integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+        crossorigin="anonymous">
 </head>
 
 <body>
-<div class="container">
-  <form class="form-horizontal" action="/" method="post">
+<main role="main" class="container">
+  <form action="/" method="post">
 
-    <!-- Navigation tabs -->
-    <div class="form-group">
-      <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active">
-          <a href="#main" role="tab" data-toggle="tab">Main</a>
-        </li>
-        <li role="presentation">
-          <a href="#loa" role="tab" data-toggle="tab">LoA</a>
-        </li>
-        <li role="presentation">
-          <a href="#rat" role="tab" data-toggle="tab">RA(T)</a>
-        </li>
-        <li role="presentation">
-          <a href="#options" role="tab" data-toggle="tab">Options</a>
-        </li>
-        <li role="presentation">
-          <a href="#about" role="tab" data-toggle="tab">About</a>
-        </li>
-      </ul>
-    </div>
+    <!-- Navbar-->
+    <nav class="nav nav-pills" role="tablist" id="navmenu">
+      <a class="nav-item nav-link active" data-toggle="tab" role="tab" href="#main">Main</a>
+      <a class="nav-item nav-link" data-toggle="tab" role="tab" href="#extra">Extra</a>
+      <a class="nav-item nav-link" data-toggle="tab" role="tab" href="#options">Options</a>
+      <a class="nav-item nav-link" data-toggle="tab" role="tab" href="#about">About</a>
+    </nav>
 
     <!-- Main tab -->
     <div class="tab-content" id="tabdiv">
-      <div role="tabpanel" class="tab-pane active" id="main">
+      <div role="tabpanel" class="tab-pane fade show active" id="main">
 
         <!-- Choices, choices... -->
-        <p class="lead">Airspace Filter and Class</p>
-
         {% for x in choices %}
         <div class="form-group row">
-          <label class="col-xs-5 control-label">{{x.label}}</label>
-          <div class="col-xs-7">
-            <label class="radio-inline">
-              <input type="radio" name="{{x.name}}" value="{{x.value1}}" {{"checked" if values[x.name]==x.value1}}>
-              {{x.option1}}
-            </label>
-            <label class="radio-inline">
-              <input type="radio" name="{{x.name}}" value="{{x.value2}}" {{"checked" if values[x.name]==x.value2}}>
-              {{x.option2}}
-            </label>
+          <label class="col-form-label text-right col-5">{{x.label}}</label>
+          <div class="col-7 col-md-4">
+            <select class="form-control" name="{{x.name}}">
+              <option value="{{x.value1}}" {{"selected" if values[x.name] == x.value1}}>{{x.option1}}</option>
+              <option value="{{x.value2}}" {{"selected" if values[x.name] == x.value2}}>{{x.option2}}</option>
+            </select>
           </div>
         </div>
         {% endfor %}
 
         <!-- Output format select -->
         <div class="form-group row">
-          <label class="col-xs-5 control-label">Format</label>
-          <div class="col-xs-7 col-md-4">
+          <label class="col-5 col-form-label text-right">Format</label>
+          <div class="col-7 col-md-4">
             <select class="form-control" name="format">
               {% for format in formats %}
               <option value="{{format['name']}}" {{"selected" if values['format'] == format['name']}}>{{format.label}}</option>
@@ -77,47 +54,42 @@
             </select>
           </div>
         </div>
-
       </div>
 
-      <!-- Wave boax and LoA tab -->
-      <div role="tabpanel" class="tab-pane" id="loa">
-
-        <p class="lead">Wave Boxes and LoA</p>
-
+      <!-- Wave boax, LoA and RA(T) tab -->
+      <div role="tabpanel" class="tab-pane fade" id="extra">
         <!-- Wave boxes -->
-        <div class="form-group">
+        <h6>Wave Boxes</h6>
+        <div class="form-group row">
         {% for x in wave %}
-          <div class="col-xs-6 checkbox">
-            <label>
-              <input type="checkbox" name="wave-{{x}}" value="" {{"checked" if ("wave-" ~ x) in values}}> {{x}}
+          <div class="col-12 col-sm-6 form-check">
+            <label class="form-check-label">
+              <input type="checkbox" class="form-check-input" name="wave-{{x}}" value="" {{"checked" if ("wave-" ~ x) in values}}>
+              {{x}}
             </label>
           </div>
         {% endfor %}
         </div>
 
         <!-- LoA -->
-        <div class="form-group">
+        <h6>LoA</h6>
+        <div class="form-group row">
         {% for x in loa %}
-          <div class="col-xs-6 checkbox">
-            <label>
-              <input type="checkbox" name="loa-{{x}}" value="" {{"checked" if ("loa-" ~ x) in values}}> {{x}}
+          <div class="col-12 col-sm-6 form-check">
+            <label class="form-check-label">
+              <input type="checkbox" class="form-check-input" name="loa-{{x}}" value="" {{"checked" if ("loa-" ~ x) in values}}> {{x}}
             </label>
           </div>
         {% endfor %}
         </div>
 
-      </div>
-
-      <!-- RAT tab -->
-      <div role="tabpanel" class="tab-pane" id="rat">
-        <p class="lead">Temporary Airspace Restrictions</p>
-
+        <!-- RA(T)s -->
+        <h6>RA(T)</h6>
         {% for x in rat %}
-        <div class="form-group">
-          <div class="col-xs-6 checkbox">
-            <label>
-              <input type="checkbox" name="rat-{{x}}" value="" {{"checked" if ("rat-" ~ x) in values}}> {{x}}
+        <div class="form-group row">
+          <div class="col-12 col-sm-6 form-check">
+            <label class="form-check-label">
+              <input type="checkbox" class="form-check-input" name="rat-{{x}}" value="" {{"checked" if ("rat-" ~ x) in values}}> {{x}}
             </label>
           </div>
         </div>
@@ -127,25 +99,27 @@
       </div>
 
       <!-- Option tab -->
-      <div role="tabpanel" class="tab-pane" id="options">
-        <p class="lead">Spatial Options</p>
-
+      <div role="tabpanel" class="tab-pane fade" id="options">
         <!-- Exclude above FL105 -->
         <div class="form-group row">
-          <label class="col-xs-5 control-label" for="fl105">
-            Omit above FL105
-          </label>
-          <div class="col-xs-7 checkbox">
-            <label>
-              <input type="checkbox" id="fl105" name="fl105" value="" {{"checked" if "fl105" in values}}>
-            </label>
+          <div class="col-5 text-right">
+            <label>Omit above FL105</label>
+          </div>
+          <div class="col-7">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="checkbox" class="form-check-input position-static" id="fl105" name="fl105" value="" {{"checked" if "fl105" in values}}>
+              </label>
+            </div>
           </div>
         </div>
 
         <!-- Latitude max/min -->
         <div class="form-group row">
-          <label class="col-xs-5 control-label">Omit North of</label>
-          <div class="col-xs-7 col-md-4">
+          <div class="col-5 text-right">
+            <label class="col-form-label">Omit North of</label>
+          </div>
+          <div class="col-7 col-md-4">
             <select class="form-control" name="north">
               {% for lat in norths %}
               <option value="{{lat['value']}}" {{"selected" if values['north'] == lat['value']}}>{{lat.label}}</option>
@@ -155,8 +129,10 @@
         </div>
 
         <div class="form-group row">
-          <label class="col-xs-5 control-label">Omit South of</label>
-          <div class="col-xs-7 col-md-4">
+          <div class="col-5 text-right">
+            <label class="col-form-label">Omit South of</label>
+          </div>
+          <div class="col-7 col-md-4">
             <select class="form-control" name="south">
               {% for lat in souths %}
               <option value="{{lat['value']}}" {{"selected" if values['south'] == lat['value']}}>{{lat.label}}</option>
@@ -164,16 +140,15 @@
             </select>
           </div>
         </div>
-
       </div>
 
       <!-- About tab -->
-      <div role="tabpanel" class="tab-pane" id="about">
-        <p class="lead">Output Format</p>
+      <div role="tabpanel" class="tab-pane fade" id="about">
+        <h6>Output Format</h6>
         <p>The recommended output format is OpenAir.
         Tim Newport-Peace (TNP) format should be used with caution; it is not
         interpreted consistently by all software.</p>
-        <p class="lead">Airspace</p>
+        <h6>Airspace</h6>
         <p>No-ATZ. No-ATZ airfields are those listed as training aerodromes in
         section ENR 5.5 of the AIP. Note - many of the smaller airfields shown
         on the 1:500000 chart are not listed in the AIP and are not included
@@ -187,32 +162,37 @@
         <p>ILS Feather. Although not controlled airspace the BGA recommend a
         radio call if you are in the vicinity and setting them to class D as a
         reminder.</p>
-        <p class="lead">Letters of Agreement (LoA)</p>
+        <h6>Letters of Agreement (LoA)</h6>
         <p>Letters of Agreement are listed on the
         <a href="https://members.gliding.co.uk/library/loas/">BGA website</a>.
         Local conditions apply to their use.</p>
-        <p class="lead">Data</p>
+        <h6>Data</h6>
         <p>The airspace database can be downloaded from
         <a href="https://github.com/ahsparrow/airspace">GitHub</a>.</p>
-        <p class="lead">Contact</p>
+        <h6>Contact</h6>
         <p>Comments, corrections and complaints to:
-        <address><a href="mailto:airspace@ukair.org.uk">Alan Sparrow</a></address></p>
+        <address><a href="mailto:web@asselect.uk">Alan Sparrow</a></address></p>
         <p><small>Version: 1.0.0</small></p>
       </div>
     </div>
 
-    <button type="submit" class="btn btn-default">Download</button>
+    <button type="submit" class="btn btn-primary">Download</button>
 
-    <p class="pull-right">{{release}}</p>
+    <p class="float-right">{{release}}</p>
   </form>
-</div>
+</main>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
-</script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" 
         crossorigin="anonymous">
 </script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+        integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+        crossorigin="anonymous">
+</script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+        integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+        crossorigin="anonymous">
+</script>
 </body>
 </html>

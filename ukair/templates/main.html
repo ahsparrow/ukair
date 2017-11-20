@@ -103,14 +103,14 @@
         <!-- Exclude above FL105 -->
         <div class="form-group row">
           <div class="col-5 text-right">
-            <label>Omit above FL105</label>
+            <label class="col-form-label">Maximum level</label>
           </div>
-          <div class="col-7">
-            <div class="form-check">
-              <label class="form-check-label">
-                <input type="checkbox" class="form-check-input position-static" id="fl105" name="fl105" value="" {{"checked" if "fl105" in values}}>
-              </label>
-            </div>
+          <div class="col-7 col-md-4">
+            <select class="form-control" name="maxlevel">
+              {% for level in maxlevels %}
+              <option value="{{level['value']}}" {{"selected" if values['maxlevel'] == level['value']}}>{{level.label}}</option>
+              {% endfor %}
+            </select>
           </div>
         </div>
 

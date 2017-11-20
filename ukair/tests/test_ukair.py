@@ -92,8 +92,8 @@ class TestCase(unittest.TestCase):
         rv = self.app.post("/", data={'wave-FOOBAR': ""})
         assert b"AN FOOBAR" not in rv.data
 
-    def test_fl105_exclude(self):
-        rv = self.app.post("/", data={'fl105': "", 'wave-TRAG ABOYNE': ""})
+    def test_maxlevel(self):
+        rv = self.app.post("/", data={'maxlevel': "10500", 'wave-TRAG ABOYNE': ""})
         assert b"AN TRAG ABOYNE" not in rv.data
 
     def test_north_filter(self):

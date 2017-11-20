@@ -54,6 +54,7 @@ DEFAULT_VALUES = {'noatz': "include",
                   'atz': "classd",
                   'ils': "atz",
                   'format': "openair",
+                  'maxlevel': "66000",
                   'north': "59",
                   'south': "50"}
 
@@ -94,7 +95,7 @@ def download():
         gliding_site = get_value(values, 'glider') == 'include',
         north = float(get_value(values, 'north')),
         south = float(get_value(values, 'south')),
-        max_level = 10500 if 'fl105' in values else None,
+        max_level = int(get_value(values, 'maxlevel')),
         exclude=exclude)
 
     # Get obstacles
@@ -201,6 +202,10 @@ def home():
     formats = [{'name': "openair", 'label': "OpenAir (recommended)"},
                {'name': "tnp", 'label': "TNP"}]
 
+    maxlevels = [{'value': "66000", 'label': "Unlimited"},
+                 {'value': "19500", 'label': "FL195"},
+                 {'value': "10500", 'label': "FL105"}]
+
     norths = [{'value': "59", 'label': "None"},
               {'value': "54.9", 'label': "Carlisle"},
               {'value': "53.7", 'label': "Hull"},
@@ -223,6 +228,7 @@ def home():
                         wave=get_wave_names(current_app),
                         loa=get_loa_names(current_app),
                         rat=get_rat_names(current_app),
+                        maxlevels=maxlevels,
                         norths=norths,
                         souths=souths))
     return resp

@@ -232,3 +232,11 @@ def home():
                         norths=norths,
                         souths=souths))
     return resp
+
+@bp.route("/release", methods=['GET'])
+def release():
+    resp = make_response(
+        render_template("release.html",
+                        release_text=get_release_header(current_app))
+    )
+    return resp

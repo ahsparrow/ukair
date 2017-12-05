@@ -22,16 +22,32 @@ import os.path
 from fabric.api import cd, env, local, prefix, put, run, sudo, task
 from fabric.contrib.files import exists
 
-def init_deploy(base_dir):
+CONFIG = {
+    'deploy': {
+        'base_dir': "/srv/www/asselect.uk",
+        'var_dir': "/var/ukair",
+        'service': "ukair_wsgi.service",
+        'site': "asselect.uk"
+    },
+    'staging': {
+        'base_dir': "/srv/www/staging.asselect.uk",
+        'var_dir': "/var/ukair_staging",
+        'service': "ukair_staging_wsgi.service",
+        'site':  "staging.asselect.uk"
+    }
+}
+
+def init_deploy(config):
+    base_dir = config['base_dir']
     code_dir = os.path.join(base_dir, "ukair")
     if exists(code_dir):
         return
 
     # Create program directory
-    sudo("install --directory --owner=%s --group=%s %s" % (env.user, env.user, base_dir))
+    sudo("install --directory --owner={} --group={} {}".format(env.user, env.user, base_dir))
 
     # Create directory for log files
-    sudo("install --directory --owner=ukair --group=www-data --mode=774 /var/ukair")
+    sudo("install --directory --owner=ukair --group=www-data --mode=774 {var_dir}".format(**config))
 
     # Create directory for static files
     static_dir = os.path.join(base_dir, "static")
@@ -47,29 +63,30 @@ def init_deploy(base_dir):
             run("pip install -r deploy/requirements.txt")
 
         # Create web service files
-        sudo("cp deploy/ukair_wsgi.service /etc/systemd/system")
-        sudo("cp deploy/asselect.uk /etc/nginx/sites-available")
+        sudo("cp deploy/{service} /etc/systemd/system".format(**config))
+        sudo("cp deploy/{site} /etc/nginx/sites-available".format(**config))
 
     # Create uWSGI service
-    sudo("systemctl enable ukair_wsgi.service")
-    sudo("systemctl start ukair_wsgi.service")
+    sudo("systemctl enable {service}".format(**config))
+    sudo("systemctl start {service}".format(**config))
 
     # Add to web server
-    sudo("ln -sf /etc/nginx/sites-available/asselect.uk /etc/nginx/sites-enabled")
+    sudo("ln -sf /etc/nginx/sites-available/{site} /etc/nginx/sites-enabled".format(**config))
     sudo("nginx -s reload")
 
 @task
-def deploy():
-    base_dir = "/srv/www/asselect.uk"
-    init_deploy(base_dir)
+def deploy(config='deploy'):
+    cfg = CONFIG[config]
+    init_deploy(cfg)
 
-    code_dir = os.path.join(base_dir, "ukair")
+    code_dir = os.path.join(cfg['base_dir'], "ukair")
     with cd(code_dir):
         run("git pull")
 
-    sudo("systemctl restart ukair_wsgi.service")
+    sudo("systemctl restart {service}".format(**cfg))
 
 @task
-def upload(filename):
-    put(filename, "/var/ukair/yaixm.json")
-    sudo("systemctl restart ukair_wsgi.service")
+def upload(filename, config='deploy'):
+    cfg = CONFIG[config]
+    put(filename, os.path.join(cfg['var_dir'], "yaixm.json"))
+    sudo("systemctl restart {service}".format(**cfg))

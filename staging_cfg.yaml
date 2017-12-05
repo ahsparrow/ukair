@@ -1,0 +1,47 @@
+flask:
+    YAIXM_FILE: /var/ukair_staging/yaixm.json
+
+    HEADER: |
+        UK Airspace
+        Alan Sparrow (airspace@asselect.uk)
+
+        To the extent possible under law, Alan Sparrow has waived all
+        copyright and related or neighboring rights to this file. The data in
+        this file is based on the work of others including: George Knight,
+        Geoff Brown, Peter Desmond and Rory O'Connor.  The data is originally
+        sourced from the UK Aeronautical Information Package (AIP).
+
+    logging:
+        version: 1
+        formatters:
+            default:
+                format: "%(levelname)s [%(asctime)s] %(message)s"
+        handlers:
+            file:
+                class: logging.handlers.RotatingFileHandler
+                level: DEBUG
+                formatter: default
+                filename: /var/ukair_staging/flask.txt
+                maxBytes: 1000000
+                backupCount: 5
+        loggers:
+            ukair:
+                level: DEBUG
+        root:
+            handlers: [file]
+            level: INFO
+
+uwsgi:
+    module: wsgi
+
+    master: true
+    processes: 2
+
+    socket: /run/ukair_staging/uwsgi.sock
+    chmod-socket: 660
+    vacuum: true
+
+    logto: /var/ukair_staging/uwsgi.txt
+    log-maxsize: 2000000
+
+    die-on-term: true

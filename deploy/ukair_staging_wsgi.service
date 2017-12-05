@@ -1,0 +1,14 @@
+[Unit]
+Description="uWSGI instance to serve UKAIR staging app"
+After=network.target
+
+[Service]
+User=ukair
+Group=www-data
+RuntimeDirectory=ukair_staging
+WorkingDirectory=/srv/www/staging.asselect.uk/ukair
+Environment="UKAIR_CONFIG=/srv/www/staging.asselect.uk/ukair/staging_cfg.yaml"
+ExecStart=/srv/www/staging.asselect.uk/ukair/venv/bin/uwsgi --yaml staging_cfg.yaml --virtualenv=/srv/www/staging.asselect.uk/ukair/venv
+
+[Install]
+WantedBy=multi-user.target

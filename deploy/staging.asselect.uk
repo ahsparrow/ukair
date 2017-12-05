@@ -1,0 +1,18 @@
+server {
+    listen 80;
+
+    server_name staging.asselect.uk;
+
+    location / {
+        root /srv/www/staging.asselect.uk/static;
+        try_files $uri @ukair;
+    }
+
+    location @ukair {
+        include uwsgi_params;
+        uwsgi_pass unix:/run/ukair_staging/uwsgi.sock;
+
+        auth_basic "Login required for staging server";
+        auth_basic_user_file /etc/nginx/htpasswd;
+    }
+}

@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with ukair.  If not, see <http://www.gnu.org/licenses/>.
 
+from copy import copy
 from datetime import datetime
 import logging
 import json
@@ -80,7 +81,7 @@ def download():
     airspace.extend(rats)
 
     # Get wave areas to be excluded
-    wave = get_wave_names(current_app)
+    wave = copy(get_wave_names(current_app))
     include_wave = [v[5:] for v in values if v.startswith("wave-")]
     for w in include_wave:
         if w in wave:

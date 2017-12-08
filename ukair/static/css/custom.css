@@ -1,5 +1,5 @@
 #tabdiv {
-  background-color: paleturquoise;
+  background-color: #e9ecef;
   padding: 1rem;
   margin-bottom: 1rem;
 }
@@ -10,6 +10,6 @@
 }
 
 #navmenu > a.active {
-    background-color: paleturquoise;
+    background-color: #e9ecef;
     color: #000;
 }

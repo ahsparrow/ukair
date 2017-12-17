@@ -70,7 +70,7 @@ def download():
 
     # Check request looks at least approximately correct
     if 'format' not in values:
-        logger.info("BAD REQUEST")
+        logger.info("BAD_REQUEST")
         abort(400)
 
     # Merge LoA

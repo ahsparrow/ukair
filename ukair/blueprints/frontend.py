@@ -21,7 +21,8 @@ import logging
 import json
 from textwrap import TextWrapper
 
-from flask import Blueprint, make_response, render_template, request, current_app
+from flask import Blueprint, make_response, render_template, request
+from flask import current_app, abort
 import yaixm
 
 logger = logging.getLogger('ukair')
@@ -66,6 +67,11 @@ def get_value(values, item):
 def download():
     values = request.form.to_dict()
     logger.info("POST %s %s" % (request.remote_addr, str(values)))
+
+    # Check request looks at least approximately correct
+    if 'format' not in values:
+        logger.info("BAD REQUEST")
+        abort(400)
 
     # Merge LoA
     yaixm_data = get_yaixm(current_app)

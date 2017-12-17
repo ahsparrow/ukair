@@ -95,14 +95,22 @@ def download():
     exclude = [{'name': w, 'type': "D_OTHER"} for w in wave]
 
     # Define filter function
+    try:
+        north = float(get_value(values, 'north'))
+        south = float(get_value(values, 'south'))
+        max_level = int(get_value(values, 'maxlevel'))
+    except ValueError:
+        logging.info("BAD_REQUEST")
+        abort(400)
+
     airfilter = yaixm.make_filter(
-        noatz = get_value(values, 'noatz') == 'include',
-        microlight = get_value(values, 'microlight') == 'include',
-        hgl = get_value(values, 'hgl') == 'include',
-        gliding_site = get_value(values, 'glider') == 'include',
-        north = float(get_value(values, 'north')),
-        south = float(get_value(values, 'south')),
-        max_level = int(get_value(values, 'maxlevel')),
+        noatz=get_value(values, 'noatz') == 'include',
+        microlight=get_value(values, 'microlight') == 'include',
+        hgl=get_value(values, 'hgl') == 'include',
+        gliding_site=get_value(values, 'glider') == 'include',
+        north=north,
+        south=south,
+        max_level=max_level,
         exclude=exclude)
 
     # Get obstacles

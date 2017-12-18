@@ -47,3 +47,5 @@ uwsgi:
     log-maxsize: 2000000
 
     die-on-term: true
+
+    stats: 127.0.0.1:1717

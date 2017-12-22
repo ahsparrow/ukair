@@ -20,6 +20,11 @@ server {
         uwsgi_pass unix:/run/ukair/uwsgi.sock;
     }
 
+    location =/robots.txt {
+        root /srv/www/asselect.uk/ukair/ukair/static;
+    }
+
+
     ssl_certificate /etc/letsencrypt/live/asselect.uk/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/asselect.uk/privkey.pem;
 }

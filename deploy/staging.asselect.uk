@@ -3,6 +3,10 @@ server {
 
     server_name staging.asselect.uk;
 
+    location =/robots.txt {
+        root /srv/www/staging.asselect.uk/ukair/ukair/static;
+    }
+
     location / {
         root /srv/www/staging.asselect.uk/static;
         try_files $uri @ukair;

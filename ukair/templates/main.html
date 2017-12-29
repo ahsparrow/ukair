@@ -31,13 +31,14 @@
       <div role="tabpanel" class="tab-pane fade show active" id="main">
 
         <!-- Choices, choices... -->
-        {% for x in choices %}
+        {% for choice in choices %}
         <div class="form-group row">
-          <label class="col-form-label text-right col-5">{{x.label}}</label>
+          <label class="col-form-label text-right col-5">{{choice.label}}</label>
           <div class="col-7 col-md-4">
-            <select class="form-control" name="{{x.name}}">
-              <option value="{{x.value1}}" {{"selected" if values[x.name] == x.value1}}>{{x.option1}}</option>
-              <option value="{{x.value2}}" {{"selected" if values[x.name] == x.value2}}>{{x.option2}}</option>
+            <select class="form-control" name="{{choice.name}}">
+              {% for option in choice.options %}
+                <option value="{{option.value}}" {{"selected" if values[choice.name] == option.value}}>{{option.option}}</option>
+              {% endfor %}
             </select>
           </div>
         </div>

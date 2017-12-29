@@ -184,33 +184,40 @@ def home():
         values = DEFAULT_VALUES
 
     choices = [
-        {'name': "noatz", 'label': "No-ATZ Airfield",
-         'value1': "exclude", 'option1': "Exclude",
-         'value2': "include", 'option2': "Include"
+        {'name': "noatz",
+         'label': "No-ATZ Airfield",
+         'options': [{'value': "exclude", 'option': "Exclude"},
+                     {'value': "include", 'option': "Include"}]
         },
-        {'name': "glider", 'label': "Gliding Site",
-         'value1': "exclude", 'option1': "Exclude",
-         'value2': "include", 'option2': "Include"
+        {'name': "glider",
+         'label': "Gliding Site",
+         'options': [{'value': "exclude", 'option': "Exclude"},
+                     {'value': "include", 'option': "Include"}]
         },
-        {'name': "microlight", 'label': "Microlight Strip",
-         'value1': "exclude", 'option1': "Exclude",
-         'value2': "include", 'option2': "Include"
+        {'name': "microlight",
+         'label': "Microlight Strip",
+         'options': [{'value': "exclude", 'option': "Exclude"},
+                     {'value': "include", 'option': "Include"}]
         },
-        {'name': "obstacle", 'label': "Obstacle",
-         'value1': "exclude", 'option1': "Exclude",
-         'value2': "include", 'option2': "Include"
+        {'name': "obstacle",
+         'label': "Obstacle",
+         'options': [{'value': "exclude", 'option': "Exclude"},
+                     {'value': "include", 'option': "Include"}]
         },
-        {'name': "hgl", 'label': "HIRTA/GVS/LASER",
-         'value1': "exclude", 'option1': "Exclude",
-         'value2': "include", 'option2': "Include"
+        {'name': "hgl",
+         'label': "HIRTA/GVS/LASER",
+         'options': [{'value': "exclude", 'option': "Exclude"},
+                     {'value': "include", 'option': "Include"}]
         },
-        {'name': "atz", 'label': "ATZ",
-         'value1': "classd", 'option1': "Class D",
-         'value2': "ctr", 'option2': "Control Zone"
+        {'name': "atz",
+         'label': "ATZ",
+         'options': [{'value': "classd", 'option': "Class D"},
+                     {'value': "ctr", 'option': "Control Zone"}]
         },
-        {'name': "ils", 'label': "ILS Feather",
-         'value1': "atz", 'option1': "As ATZ",
-         'value2': "classg", 'option2': "Class G"
+        {'name': "ils",
+         'label': "ILS Feather",
+         'options': [{'value': "atz", 'option': "As ATZ"},
+                     {'value': "classg", 'option': "Class G"}]
         }
     ]
 

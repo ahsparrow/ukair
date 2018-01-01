@@ -48,7 +48,7 @@ def get_release_header(app):
     return app.config['YAIXM_DATA']['release'].get('note', "")
 
 # Default UI settings
-DEFAULT_VALUES = {'noatz': "include",
+DEFAULT_VALUES = {'noatz': "classg",
                   'microlight': "exclude",
                   'hgl': "exclude",
                   'obstacle': "exclude",
@@ -104,10 +104,10 @@ def download():
         abort(400)
 
     airfilter = yaixm.make_filter(
-        noatz=get_value(values, 'noatz') == 'include',
-        microlight=get_value(values, 'microlight') == 'include',
-        hgl=get_value(values, 'hgl') == 'include',
-        gliding_site=get_value(values, 'glider') == 'include',
+        noatz=get_value(values, 'noatz') != 'exclude',
+        microlight=get_value(values, 'microlight') != 'exclude',
+        hgl=get_value(values, 'hgl') != 'exclude',
+        gliding_site=get_value(values, 'glider') != 'exclude',
         north=north,
         south=south,
         max_level=max_level,
@@ -136,22 +136,38 @@ def download():
 
     # Airspace convert
     if get_value(values, 'format') == "tnp":
-        # TNP
-        atz_class = "D" if get_value(values, 'atz') == "classd" else None
-        ils_class = atz_class if get_value(values, 'ils') == "atz" else "G"
-        class_func = yaixm.make_tnp_class(atz_class, ils_class)
+        # TNP class
+        atz = "D" if get_value(values, 'atz') == "classd" else None
+        ils = atz if get_value(values, 'ils') == "atz" else "G"
+        glider = {'classf': "F",
+                  'classg': "G",
+                  'gsec': None}.get(get_value(values, 'glider'))
+        noatz = "F" if get_value(values, 'noatz') == "classf" else "G"
+        ul = "F" if get_value(values, 'microlight') == "classf" else "G"
+        class_func = yaixm.make_tnp_class(atz=atz, ils=ils, glider=glider,
+                                          noatz=noatz, ul=ul)
 
-        ils_type = "CTA/CTR" if get_value(values, 'ils') == "atz" else "OTHER"
-        type_func = yaixm.make_tnp_type(ils_type)
+        # TNP type
+        ils = "CTA/CTR" if get_value(values, 'ils') == "atz" else "OTHER"
+        glider = "GSEC" if get_value(values, 'glider') == "gsec" else "OTHER"
+        type_func = yaixm.make_tnp_type(ils=ils, glider=glider)
 
         converter = yaixm.Tnp(filter_func=airfilter, header=header,
                               class_func=class_func, type_func=type_func)
         filename = "uk%s.sua" % get_airac_date(current_app)
     else:
-        # Openair
+        # Openair type
         atz = "CTR" if get_value(values, 'atz') == "ctr" else "D"
         ils = atz if get_value(values, 'ils') == "atz" else "G"
-        type_func = yaixm.make_openair_type(atz=atz, ils=ils)
+        noatz = "F" if get_value(values, 'noatz') == "classf" else "G"
+        ul = "F" if get_value(values, 'microlight') == "classf" else "G"
+
+        glider = {'classf': "F",
+                  'classg': "G",
+                  'gsec': "W"}.get(get_value(values, 'glider'))
+
+        type_func = yaixm.make_openair_type(atz=atz, ils=ils, glider=glider,
+                                            noatz=noatz, ul=ul)
 
         converter = yaixm.Openair(filter_func=airfilter, type_func=type_func,
                                   header=header)
@@ -187,17 +203,21 @@ def home():
         {'name': "noatz",
          'label': "No-ATZ Airfield",
          'options': [{'value': "exclude", 'option': "Exclude"},
-                     {'value': "include", 'option': "Include"}]
+                     {'value': "classf", 'option': "Class F"},
+                     {'value': "classg", 'option': "Class G"}]
         },
         {'name': "glider",
          'label': "Gliding Site",
          'options': [{'value': "exclude", 'option': "Exclude"},
-                     {'value': "include", 'option': "Include"}]
+                     {'value': "gsec", 'option': "Gliding Sector"},
+                     {'value': "classf", 'option': "Class F"},
+                     {'value': "classg", 'option': "Glass G"}]
         },
         {'name': "microlight",
          'label': "Microlight Strip",
          'options': [{'value': "exclude", 'option': "Exclude"},
-                     {'value': "include", 'option': "Include"}]
+                     {'value': "classf", 'option': "Class F"},
+                     {'value': "classg", 'option': "Class G"}]
         },
         {'name': "obstacle",
          'label': "Obstacle",

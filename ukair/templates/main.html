@@ -60,12 +60,19 @@
       <!-- Wave boax, LoA and RA(T) tab -->
       <div role="tabpanel" class="tab-pane fade" id="extra">
         <!-- Wave boxes -->
-        <h6>Wave Boxes</h6>
+        <div class="row">
+          <div class="col-auto">
+            <h6>Wave Boxes</h6>
+          </div>
+          <div class="col-auto ml-auto">
+            <a id="wave-set" href="#">Set/Clear All</a>
+          </div>
+        </div>
         <div class="form-group row">
         {% for x in wave %}
           <div class="col-12 col-sm-6 form-check">
             <label class="form-check-label">
-              <input type="checkbox" class="form-check-input" name="wave-{{x}}" value="" {{"checked" if ("wave-" ~ x) in values}}>
+              <input type="checkbox" class="form-check-input wave-check" name="wave-{{x}}" value="" {{"checked" if ("wave-" ~ x) in values}}>
               {{x}}
             </label>
           </div>
@@ -73,24 +80,38 @@
         </div>
 
         <!-- LoA -->
-        <h6>LoA</h6>
+        <div class="row">
+          <div class="col-auto">
+            <h6>LoA</h6>
+          </div>
+          <div class="col-auto ml-auto">
+            <a id="loa-set" href="#">Set/Clear All</a>
+          </div>
+        </div>
         <div class="form-group row">
         {% for x in loa %}
           <div class="col-12 col-sm-6 form-check">
             <label class="form-check-label">
-              <input type="checkbox" class="form-check-input" name="loa-{{x}}" value="" {{"checked" if ("loa-" ~ x) in values}}> {{x}}
+              <input type="checkbox" class="form-check-input loa-check" name="loa-{{x}}" value="" {{"checked" if ("loa-" ~ x) in values}}> {{x}}
             </label>
           </div>
         {% endfor %}
         </div>
 
         <!-- RA(T)s -->
-        <h6>RA(T)</h6>
+        <div class="row">
+          <div class="col-auto">
+            <h6>RA(T)</h6>
+          </div>
+          <div class="col-auto ml-auto">
+            <a id="rat-set" href="#">Set/Clear All</a>
+          </div>
+        </div>
         {% for x in rat %}
         <div class="form-group row">
           <div class="col-12 col-sm-6 form-check">
             <label class="form-check-label">
-              <input type="checkbox" class="form-check-input" name="rat-{{x}}" value="" {{"checked" if ("rat-" ~ x) in values}}> {{x}}
+              <input type="checkbox" class="form-check-input rat-check" name="rat-{{x}}" value="" {{"checked" if ("rat-" ~ x) in values}}> {{x}}
             </label>
           </div>
         </div>
@@ -180,7 +201,7 @@
         <h6>Contact</h6>
         <p>Comments, corrections and complaints to:
         <address><a class="text-primary" href="mailto:web@asselect.uk">Alan Sparrow</a></address></p>
-        <p><small>Version: 1.2.0</small></p>
+        <p><small>Version: 1.2.1</small></p>
       </div>
     </div>
 
@@ -201,6 +222,23 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
         integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
         crossorigin="anonymous">
+</script>
+
+<script>
+$("#wave-set").on("click", function() {
+    var checkboxes = $(".wave-check");
+    checkboxes.prop("checked", !checkboxes.prop("checked"));
+});
+
+$("#loa-set").on("click", function() {
+    var checkboxes = $(".loa-check");
+    checkboxes.prop("checked", !checkboxes.prop("checked"));
+});
+
+$("#rat-set").on("click", function() {
+    var checkboxes = $(".rat-check");
+    checkboxes.prop("checked", !checkboxes.prop("checked"));
+});
 </script>
 </body>
 </html>

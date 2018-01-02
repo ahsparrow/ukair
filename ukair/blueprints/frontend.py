@@ -19,6 +19,7 @@ from copy import copy
 from datetime import datetime
 import logging
 import json
+from pprint import pformat
 from textwrap import TextWrapper
 
 from flask import Blueprint, make_response, render_template, request
@@ -132,7 +133,8 @@ def download():
             datetime.utcnow().isoformat())
 
     wrapper = TextWrapper(width=70, subsequent_indent="           ")
-    header += wrapper.fill("Settings: {}".format(str(values)))
+    header += wrapper.fill(
+            "Settings: {}".format(pformat(values, width=9999, compact=True)))
 
     # Airspace convert
     if get_value(values, 'format') == "tnp":

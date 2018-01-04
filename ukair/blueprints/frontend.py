@@ -203,20 +203,20 @@ def home():
 
     choices = [
         {'name': "noatz",
-         'label': "No-ATZ Airfield",
+         'label': "No-ATZ A/F",
          'options': [{'value': "exclude", 'option': "Exclude"},
                      {'value': "classf", 'option': "Class F"},
                      {'value': "classg", 'option': "Class G"}]
         },
         {'name': "glider",
-         'label': "Gliding Site",
+         'label': "Gliding A/F",
          'options': [{'value': "exclude", 'option': "Exclude"},
                      {'value': "gsec", 'option': "Gliding Sector"},
                      {'value': "classf", 'option': "Class F"},
                      {'value': "classg", 'option': "Glass G"}]
         },
         {'name': "microlight",
-         'label': "Microlight Strip",
+         'label': "Microlight A/F",
          'options': [{'value': "exclude", 'option': "Exclude"},
                      {'value': "classf", 'option': "Class F"},
                      {'value': "classg", 'option': "Class G"}]
@@ -227,7 +227,7 @@ def home():
                      {'value': "include", 'option': "Include"}]
         },
         {'name': "hgl",
-         'label': "HIRTA/GVS/LASER",
+         'label': "HIRTA/GVS",
          'options': [{'value': "exclude", 'option': "Exclude"},
                      {'value': "include", 'option': "Include"}]
         },

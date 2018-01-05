@@ -9,8 +9,8 @@
 
   <link href="static/css/custom.css" rel="stylesheet">
   <link rel="stylesheet"
-        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
-        integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
+        integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
         crossorigin="anonymous">
 </head>
 
@@ -68,13 +68,16 @@
             <button id="wave-set" type="button" class="btn btn-sm btn-link">Set/Clear All</button>
           </div>
         </div>
+
         <div class="form-group row">
         {% for x in wave %}
-          <div class="col-12 col-sm-6 form-check">
-            <label class="form-check-label">
-              <input type="checkbox" class="form-check-input wave-check" name="wave-{{x}}" value="" {{"checked" if ("wave-" ~ x) in values}}>
-              {{x}}
-            </label>
+          <div class="col-12 col-sm-6">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="checkbox" class="form-check-input wave-check" name="wave-{{x}}" value="" {{"checked" if ("wave-" ~ x) in values}}>
+                {{x}}
+              </label>
+            </div>
           </div>
         {% endfor %}
         </div>
@@ -88,12 +91,16 @@
             <button id="loa-set" type="button" class="btn btn-sm btn-link">Set/Clear All</button>
           </div>
         </div>
+
         <div class="form-group row">
         {% for x in loa %}
-          <div class="col-12 col-sm-6 form-check">
-            <label class="form-check-label">
-              <input type="checkbox" class="form-check-input loa-check" name="loa-{{x}}" value="" {{"checked" if ("loa-" ~ x) in values}}> {{x}}
-            </label>
+          <div class="col-12 col-sm-6">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="checkbox" class="form-check-input loa-check" name="loa-{{x}}" value="" {{"checked" if ("loa-" ~ x) in values}}>
+                {{x}}
+              </label>
+            </div>
           </div>
         {% endfor %}
         </div>
@@ -107,17 +114,23 @@
             <button id="rat-set" type="button" class="btn btn-sm btn-link">Set/Clear All</button>
           </div>
         </div>
-        {% for x in rat %}
+
         <div class="form-group row">
-          <div class="col-12 col-sm-6 form-check">
-            <label class="form-check-label">
-              <input type="checkbox" class="form-check-input rat-check" name="rat-{{x}}" value="" {{"checked" if ("rat-" ~ x) in values}}> {{x}}
-            </label>
+        {% for x in rat %}
+          <div class="col-12 col-sm-6">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="checkbox" class="form-check-input rat-check" name="rat-{{x}}" value="" {{"checked" if ("rat-" ~ x) in values}}>
+                {{x}}
+              </label>
+            </div>
           </div>
-        </div>
         {% else %}
-        <p>No RA(T)s currently published.</p>
+          <div class="col-12 col-sm-6">
+            <label>No RA(T)s currently published.</label>
+          </div>
         {% endfor %}
+        </div>
       </div>
 
       <!-- Option tab -->
@@ -201,7 +214,7 @@
         <h6>Contact</h6>
         <address>Comments, corrections and complaints to:<br />
         <a class="text-primary" href="mailto:web@asselect.uk">Alan Sparrow</a></address>
-        <p><small>Version: 1.2.1</small></p>
+        <p><small>Version: 1.2.2</small></p>
       </div>
     </div>
 
@@ -215,12 +228,12 @@
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" 
         crossorigin="anonymous">
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
-        integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
         crossorigin="anonymous">
 </script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
-        integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" 
+        integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" 
         crossorigin="anonymous">
 </script>
 

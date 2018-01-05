@@ -71,7 +71,7 @@
 
         <div class="form-group row">
         {% for x in wave %}
-          <div class="col-12 col-sm-6">
+          <div class="col-12 col-sm-6 mb-1">
             <div class="form-check">
               <label class="form-check-label">
                 <input type="checkbox" class="form-check-input wave-check" name="wave-{{x}}" value="" {{"checked" if ("wave-" ~ x) in values}}>
@@ -94,7 +94,7 @@
 
         <div class="form-group row">
         {% for x in loa %}
-          <div class="col-12 col-sm-6">
+          <div class="col-12 col-sm-6 mb-1">
             <div class="form-check">
               <label class="form-check-label">
                 <input type="checkbox" class="form-check-input loa-check" name="loa-{{x}}" value="" {{"checked" if ("loa-" ~ x) in values}}>
@@ -117,7 +117,7 @@
 
         <div class="form-group row">
         {% for x in rat %}
-          <div class="col-12 col-sm-6">
+          <div class="col-12 col-sm-6 mb-1">
             <div class="form-check">
               <label class="form-check-label">
                 <input type="checkbox" class="form-check-input rat-check" name="rat-{{x}}" value="" {{"checked" if ("rat-" ~ x) in values}}>

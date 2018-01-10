@@ -187,7 +187,7 @@ def download():
     resp  = make_response(dos_data.encode(encoding="ascii"))
     resp.headers['Content-Type'] = "text/plain"
     resp.headers['Content-Disposition'] = "attachment; filename=%s" % filename
-    resp.set_cookie('values', json.dumps(values))
+    resp.set_cookie('values', value=json.dumps(values), max_age=63072000)
 
     return resp
 

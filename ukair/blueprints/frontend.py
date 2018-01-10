@@ -48,6 +48,9 @@ def get_airac_date(app):
 def get_release_header(app):
     return app.config['YAIXM_DATA']['release'].get('note', "")
 
+# Permanently enabled LoA
+SPECIAL_LOA = ["CAMBRIDGE RAZ"]
+
 # Default UI settings
 DEFAULT_VALUES = {'noatz': "classg",
                   'microlight': "exclude",
@@ -77,6 +80,7 @@ def download():
     # Merge LoA
     yaixm_data = get_yaixm(current_app)
     loa_names = [v[4:] for v in values if v.startswith("loa-")]
+    loa_names.extend(SPECIAL_LOA)
     loa = [loa for loa in yaixm_data.get('loa', [])
            if loa['name'] in loa_names]
     airspace = yaixm.merge_loa(yaixm_data['airspace'], loa)
@@ -263,6 +267,8 @@ def home():
 
     release= "AIRAC: %s" % get_airac_date(current_app)
 
+    loa = [loa for loa in get_loa_names(current_app) if loa not in SPECIAL_LOA]
+
     resp  = make_response(
         render_template("main.html",
                         values=values,
@@ -270,7 +276,7 @@ def home():
                         choices=choices,
                         formats=formats,
                         wave=get_wave_names(current_app),
-                        loa=get_loa_names(current_app),
+                        loa=loa,
                         rat=get_rat_names(current_app),
                         maxlevels=maxlevels,
                         norths=norths,

@@ -81,6 +81,9 @@ def deploy(config='deploy'):
 
     code_dir = os.path.join(cfg['base_dir'], "ukair")
     with cd(code_dir):
+        with prefix("source venv/bin/activate"):
+            run("pip install git+https://github.com/ahsparrow/yaixm.git --upgrade")
+
         run("git pull")
 
     sudo("systemctl restart {service}".format(**cfg))

@@ -11,7 +11,7 @@ server {
     }
 
     # Static files
-    location /static {
+    location /static/ {
         root /srv/www/staging.asselect.uk/ukair;
     }
 

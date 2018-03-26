@@ -15,6 +15,11 @@ server {
         root /srv/www/staging.asselect.uk/ukair/ukair;
     }
 
+    # Media files
+    location  /media/ {
+        root /var/ukair_staging;
+    }
+
     # Flask application
     location @ukair {
         include uwsgi_params;

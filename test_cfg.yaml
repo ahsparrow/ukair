@@ -1,6 +1,8 @@
 flask:
     YAIXM_FILE: yaixm.json
 
+    NOTAM_DIR: notam
+
     HEADER: |
         UK Airspace
         Alan Sparrow (airspace@asselect.uk)

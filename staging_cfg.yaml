@@ -1,7 +1,7 @@
 flask:
     YAIXM_FILE: /var/ukair_staging/yaixm.json
 
-    NOTAM: /var/ukair_staging/media/notam
+    NOTAM_DIR: /var/ukair_staging/media/notam
 
     HEADER: |
         UK Airspace

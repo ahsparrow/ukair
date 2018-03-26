@@ -3,15 +3,19 @@ server {
 
     server_name staging.asselect.uk;
 
-    location =/robots.txt {
-        root /srv/www/staging.asselect.uk/ukair/ukair/static;
-    }
-
     location / {
+        # Include this for certbot
         root /srv/www/staging.asselect.uk/static;
+
         try_files $uri @ukair;
     }
 
+    # Static files
+    location /static {
+        root /srv/www/staging.asselect.uk/ukair
+    }
+
+    # Flask application
     location @ukair {
         include uwsgi_params;
         uwsgi_pass unix:/run/ukair_staging/uwsgi.sock;

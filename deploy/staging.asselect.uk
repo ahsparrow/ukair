@@ -12,7 +12,7 @@ server {
 
     # Static files
     location /static/ {
-        root /srv/www/staging.asselect.uk/ukair;
+        root /srv/www/staging.asselect.uk/ukair/ukair;
     }
 
     # Flask application

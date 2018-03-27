@@ -17,7 +17,7 @@ server {
 
     # Media files
     location  /media/ {
-        root /var/ukair_staging;
+        root /var/ukair;
     }
 
     # Flask application

@@ -49,6 +49,9 @@ def init_deploy(config):
     # Create directory for log files
     sudo("install --directory --owner=ukair --group=www-data --mode=774 {var_dir}".format(**config))
 
+    # Create directory for NOTAM files
+    sudo("install --directory --owner=ukair --group=www-data --mode=774 {var_dir}/media/notam".format(**config))
+
     # Create directory for static files
     static_dir = os.path.join(base_dir, "static")
     run("mkdir -p %s" % static_dir)

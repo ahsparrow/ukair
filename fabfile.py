@@ -85,7 +85,7 @@ def deploy(config='deploy'):
     code_dir = os.path.join(cfg['base_dir'], "ukair")
     with cd(code_dir):
         with prefix("source venv/bin/activate"):
-            run("pip install git+https://github.com/ahsparrow/yaixm.git --upgrade")
+            run("pip install git+https://github.com/ahsparrow/yaixm.git --upgrade --upgrade-strategy only-if-needed")
 
         run("git pull")
 

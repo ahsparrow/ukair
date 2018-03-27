@@ -22,29 +22,43 @@
   </div>
   <div>
     <h2>NOTAM</h2>
-    <p>NOTAMs are not included in the ASSelect data. Instead the PDF files
-       below give a summary of NOTAMs relevant to glider cross country
-       flying for the next two days.</p>
+    <p>NOTAMs are not included in the ASSelect data. The PDF files
+       below show a summary of NOTAMs relevant to glider cross country
+       flying for the next today and tomorrow.</p>
     <p>Today's NOTAMs are refreshed once an hour. Tomorrow's are refreshed
        every six hours.</p>
-    <ul class="list-unstyled">
-      <li>
+    <div class="row mb-1">
+      <div class="ml-1 col-sm-auto">
         <a class="text-primary" href="media/notam/today_south.pdf">Today (England/Wales)</a>
-        - {{updates.today_south}}
-      </li>
-      <li>
-        <a class="text-primary" href="media/notam/today_north.pdf">Today (Scotland/North England)</a>
-        - {{updates.today_north}}
-      </li>
-      <li>
+      </div>
+      <div class="ml-2 col-sm-auto">
+        ({{updates.today_south}})
+      </div>
+    </div>
+    <div class="row mb-1">
+      <div class="ml-1 col-sm-auto">
+        <a class="text-primary" href="media/notam/today_north.pdf">Today (Scotland/N. England)</a>
+      </div>
+      <div class="ml-2 col-sm-auto">
+        ({{updates.today_north}})
+      </div>
+    </div>
+    <div class="row mb-1">
+      <div class="ml-1 col-sm-auto">
         <a class="text-primary" href="media/notam/tomorrow_south.pdf">Tomorrow (England/Wales)</a>
-        - {{updates.tomorrow_south}}
-      </li>
-      <li>
-        <a class="text-primary" href="media/notam/tomorrow_north.pdf">Tomorrow (Scotland/North England)</a>
-        - {{updates.tomorrow_north}}
-      </li>
-    </ul>
+      </div>
+      <div class="ml-2 col-sm-auto">
+        ({{updates.tomorrow_south}})
+      </div>
+    </div>
+    <div class="row">
+      <div class="ml-1 col-sm-auto">
+        <a class="text-primary" href="media/notam/tomorrow_north.pdf">Tomorrow (Scotland/N. England)</a>
+      </div>
+      <div class="ml-2 col-sm-auto">
+        ({{updates.tomorrow_north}})
+      </div>
+    </div>
   </div>
 </main>
 </body>

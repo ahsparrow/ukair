@@ -18,6 +18,8 @@ server {
     # Media files
     location  /media/ {
         root /var/ukair;
+
+	expires 0s;
     }
 
     # Flask application

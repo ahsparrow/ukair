@@ -89,7 +89,13 @@ def deploy(config='deploy'):
 
         run("git pull")
 
+        # Copy web service files
+        sudo("cp deploy/{service} /etc/systemd/system".format(**cfg))
+        sudo("cp deploy/{site} /etc/nginx/sites-available".format(**cfg))
+
+    sudo("systemctl daemon-reload")
     sudo("systemctl restart {service}".format(**cfg))
+    sudo("nginx -s reload")
 
 @task
 def upload(filename, config='deploy'):

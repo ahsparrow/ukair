@@ -11,19 +11,28 @@ server {
     server_name asselect.uk www.asselect.uk;
 
     location / {
+        # Include this for certbot
         root /srv/www/asselect.uk/static;
+
         try_files $uri @ukair;
     }
 
+    # Static files
+    location /static/ {
+        root /srv/www/asselect.uk/ukair/ukair;
+    }
+
+    # Media files
+    location  /media/ {
+        root /var/ukair;
+        expires 1m;
+    }
+
+    # Flask application
     location @ukair {
         include uwsgi_params;
         uwsgi_pass unix:/run/ukair/uwsgi.sock;
     }
-
-    location =/robots.txt {
-        root /srv/www/asselect.uk/ukair/ukair/static;
-    }
-
 
     ssl_certificate /etc/letsencrypt/live/asselect.uk/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/asselect.uk/privkey.pem;

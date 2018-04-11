@@ -85,11 +85,17 @@ def download():
            if loa['name'] in loa_names]
     airspace = yaixm.merge_loa(yaixm_data['airspace'], loa)
 
-    # Add RA(T)s
+    # RA(T)s
     rat_names = [v[4:] for v in values if v.startswith("rat-")]
     rats = [rat for rat in yaixm_data.get('rat', [])
             if rat['name'] in rat_names]
-    airspace.extend(rats)
+
+    if get_value(values, 'format') == "ratonly":
+        # Replace airspace with RA(T)s
+        airspace = rats
+    else:
+        # Add RA(T)s to airspace
+        airspace.extend(rats)
 
     # Get wave areas to be excluded
     wave = copy(get_wave_names(current_app))
@@ -248,7 +254,8 @@ def home():
     ]
 
     formats = [{'name': "openair", 'label': "OpenAir (recommended)"},
-               {'name': "tnp", 'label': "TNP"}]
+               {'name': "tnp", 'label': "TNP"},
+               {'name': "ratonly", 'label': "RA(T) Only, OpenAir"}] 
 
     maxlevels = [{'value': "66000", 'label': "Unlimited"},
                  {'value': "19500", 'label': "FL195"},

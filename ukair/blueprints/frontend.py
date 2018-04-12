@@ -283,7 +283,7 @@ def home():
 
     gliding_sites = get_gliding_sites(current_app)
 
-    release= "AIRAC: %s" % get_airac_date(current_app)
+    release = "AIRAC: %s" % get_airac_date(current_app)
 
     loa = [loa for loa in get_loa_names(current_app) if loa not in SPECIAL_LOA]
 

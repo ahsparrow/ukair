@@ -58,6 +58,11 @@ def load_yaixm(app):
 
     rat_names = [rat['name'] for rat in yaixm_data.get('rat', [])]
 
+    gliding_sites = [a['name'] for a in yaixm_data['airspace']
+            if a['type'] == "OTHER" and a.get('localtype') == "GLIDER"]
+    gliding_sites.sort()
+    gliding_sites.insert(0, "None")
+
     airac_date = yaixm_data['release']['airac_date'][:10]
     logger.info("AIRAC %s" % airac_date)
 
@@ -65,6 +70,7 @@ def load_yaixm(app):
     app.config['LOA_NAMES'] = loa_names
     app.config['WAVE_NAMES'] = wave_names
     app.config['RAT_NAMES'] = rat_names
+    app.config['GLIDING_SITES'] = gliding_sites
     app.config['AIRAC_DATE'] = airac_date
 
 # Flask application factory. config argument is either a dictionary of

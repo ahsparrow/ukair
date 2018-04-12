@@ -42,6 +42,9 @@ def get_wave_names(app):
 def get_rat_names(app):
     return app.config['RAT_NAMES']
 
+def get_gliding_sites(app):
+    return app.config['GLIDING_SITES']
+
 def get_airac_date(app):
     return app.config['AIRAC_DATE']
 
@@ -62,7 +65,8 @@ DEFAULT_VALUES = {'noatz': "classg",
                   'format': "openair",
                   'maxlevel': "66000",
                   'north': "59",
-                  'south': "50"}
+                  'south': "50",
+                  'homesite': "None"}
 
 def get_value(values, item):
     return values.get(item, DEFAULT_VALUES[item])
@@ -104,6 +108,11 @@ def download():
         if w in wave:
             wave.remove(w)
     exclude = [{'name': w, 'type': "D_OTHER"} for w in wave]
+
+    # Exclude home gliding site
+    exclude.append({'name': values['homesite'],
+                    'type': "OTHER",
+                    'localtype': "GLIDER"})
 
     # Define filter function
     try:
@@ -272,6 +281,8 @@ def home():
               {'value': "53.7", 'label': "Hull"},
               {'value': "54.9", 'label': "Carlisle"}]
 
+    gliding_sites = get_gliding_sites(current_app)
+
     release= "AIRAC: %s" % get_airac_date(current_app)
 
     loa = [loa for loa in get_loa_names(current_app) if loa not in SPECIAL_LOA]
@@ -287,7 +298,8 @@ def home():
                         rat=get_rat_names(current_app),
                         maxlevels=maxlevels,
                         norths=norths,
-                        souths=souths))
+                        souths=souths,
+                        glidingsites=gliding_sites))
     return resp
 
 @bp.route("/release", methods=['GET'])

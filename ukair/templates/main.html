@@ -139,10 +139,10 @@
 
       <!-- Option tab -->
       <div class="tab-pane fade" id="options">
-        <!-- Exclude above FL105 -->
+        <!-- Exclude above -->
         <div class="form-group row">
           <div class="col-5 text-right">
-            <label class="col-form-label">Max. level</label>
+            <label class="col-form-label">Max level</label>
           </div>
           <div class="col-7 col-md-4">
             <select class="form-control" name="maxlevel">
@@ -179,6 +179,20 @@
             </select>
           </div>
         </div>
+
+        <!-- Home club -->
+        <div class="form-group row">
+          <div class="col-5 text-right">
+            <label class="col-form-label">Exclude home</label>
+          </div>
+          <div class="col-7 col-md-4">
+            <select class="form-control" name="homesite">
+              {% for site in glidingsites %}
+              <option value="{{site}}" {{"selected" if values['homesite'] == site}}>{{site}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
       </div>
 
       <!-- About tab -->
@@ -203,7 +217,8 @@
         shown on the 1:500000 chart are not listed in the AIP and are not
         included by this app.)</p>
         <p><em>Gliding Airfields</em> are listed in ENR&nbsp;5.5 and are
-        given a radius of 1&nbsp;nm by ASSelect.</p>
+        given a radius of 1&nbsp;nm by ASSelect. Your home site is
+        excluded if selected on the Opt tab.</p>
         <p><em>Microlight Airfields</em> are listed in ENR&nbsp;5.5 and
         are given a radius of 0.5&nbsp;nm by ASSelect.</p>
         <p><em>Obstacles</em> are listed in ENR&nbsp;5.4. Only obstacles

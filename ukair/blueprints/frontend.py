@@ -268,7 +268,9 @@ def home():
 
     maxlevels = [{'value': "66000", 'label': "Unlimited"},
                  {'value': "19500", 'label': "FL195"},
-                 {'value': "10500", 'label': "FL105"}]
+                 {'value': "12500", 'label': "FL125"},
+                 {'value': "10500", 'label': "FL105"},
+                 {'value': "6500", 'label': "FL65"}]
 
     norths = [{'value': "59", 'label': "None"},
               {'value': "54.9", 'label': "Carlisle"},

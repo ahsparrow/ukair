@@ -27,7 +27,7 @@
       <a class="nav-item nav-link px-2 px-sm-3" data-toggle="tab" href="#extra">Extra</a>
       <a class="nav-item nav-link px-2 px-sm-3" data-toggle="tab" href="#options">Opts</a>
       <a class="nav-item nav-link px-2 px-sm-3 mr-auto" data-toggle="tab" href="#about">About</a>
-      <a class="nav-item nav-link px-2 px-sm-3" href="/notam">NOTAM</a>
+      <a class="nav-item nav-link px-2 px-sm-3" data-toggle="tab" href="#notam">NOTAM</a>
     </nav>
 
     <!-- Main tab -->
@@ -262,6 +262,48 @@
         <address>Comments, corrections and complaints to:<br />
         <a class="text-primary" href="mailto:web@asselect.uk">Alan Sparrow</a></address>
         <a class="small" href="https://github.com/ahsparrow/ukair/commits/master">Version: 1.6.1</a>
+      </div>
+
+      <!-- NOTAM tab -->
+      <div class="tab-pane fade" id="notam">
+        <h4>NOTAM</h4>
+        <p>NOTAMs are <em>not</em> included in the ASSelect data. Instead
+           the four PDFs below show a summary of NOTAMs below FL100 relevant to
+           cross country gliding.</p>
+        <p>Today's NOTAMs are refreshed once an hour; tomorrow's every
+           six hours.</p>
+        <div class="row mb-1">
+          <div class="ml-1 col-sm-auto">
+            <a class="text-primary" href="media/notam/today_south.pdf">Today (England/Wales)</a>
+          </div>
+          <div class="ml-2 col-sm-auto">
+            ({{notams.today_south}})
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="ml-1 col-sm-auto">
+            <a class="text-primary" href="media/notam/today_north.pdf">Today (Scotland/N. England)</a>
+          </div>
+          <div class="ml-2 col-sm-auto">
+            ({{notams.today_north}})
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="ml-1 col-sm-auto">
+            <a class="text-primary" href="media/notam/tomorrow_south.pdf">Tomorrow (England/Wales)</a>
+          </div>
+          <div class="ml-2 col-sm-auto">
+            ({{notams.tomorrow_south}})
+          </div>
+        </div>
+        <div class="row">
+          <div class="ml-1 col-sm-auto">
+            <a class="text-primary" href="media/notam/tomorrow_north.pdf">Tomorrow (Scotland/N. England)</a>
+          </div>
+          <div class="ml-2 col-sm-auto">
+            ({{notams.tomorrow_north}})
+          </div>
+        </div>
       </div>
     </div>
 

@@ -20,7 +20,9 @@ from datetime import datetime
 import logging
 import json
 from pprint import pformat
+import os
 from textwrap import TextWrapper
+import time
 
 from flask import Blueprint, make_response, render_template, request
 from flask import current_app, abort
@@ -67,6 +69,25 @@ DEFAULT_VALUES = {'noatz': "classg",
                   'north': "59",
                   'south': "50",
                   'homesite': "None"}
+
+# NOTAMS for today and tomorrow
+NOTAMS = ["today_south", "today_north", "tomorrow_south", "tomorrow_north"]
+
+# Get NOTAM update times
+def get_notams(app):
+    notam_path = current_app.config['NOTAM_DIR']
+
+    notams = {}
+    for n in NOTAMS:
+        try:
+            notam_filename = n + ".pdf"
+            stat = os.stat(os.path.join(notam_path, notam_filename))
+            notams[n] = time.strftime("%H:%M %a %d/%m/%y",
+                                       time.localtime(stat.st_mtime))
+        except FileNotFoundError:
+            notams[n] = "unavailable"
+
+    return notams
 
 def get_value(values, item):
     return values.get(item, DEFAULT_VALUES[item])
@@ -301,7 +322,8 @@ def home():
                         maxlevels=maxlevels,
                         norths=norths,
                         souths=souths,
-                        glidingsites=gliding_sites))
+                        glidingsites=gliding_sites,
+                        notams=get_notams(current_app)))
     return resp
 
 @bp.route("/release", methods=['GET'])

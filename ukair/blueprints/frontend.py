@@ -279,6 +279,7 @@ def home():
         {'name': "ils",
          'label': "ILS Feather",
          'options': [{'value': "atz", 'option': "As ATZ"},
+                     {'value': "classf", 'option': "Class F"},
                      {'value': "classg", 'option': "Class G"}]
         }
     ]

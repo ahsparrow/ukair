@@ -131,7 +131,7 @@ def download():
     exclude = [{'name': w, 'type': "D_OTHER"} for w in wave]
 
     # Exclude home gliding site
-    exclude.append({'name': values['homesite'],
+    exclude.append({'name': get_value(values, 'homesite'),
                     'type': "OTHER",
                     'localtype': "GLIDER"})
 

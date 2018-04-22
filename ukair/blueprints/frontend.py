@@ -92,10 +92,10 @@ def get_notams(app):
 def get_value(values, item):
     return values.get(item, DEFAULT_VALUES[item])
 
-@bp.route("/", methods=['POST'])
+@bp.route("/download", methods=['GET'])
 def download():
-    values = request.form.to_dict()
-    logger.info("POST %s %s" % (request.remote_addr, str(values)))
+    values = request.args.to_dict()
+    logger.info("GET %s %s" % (request.remote_addr, str(values)))
 
     # Check request looks at least approximately correct
     if 'format' not in values:

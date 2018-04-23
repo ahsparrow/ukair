@@ -180,7 +180,9 @@ def download():
     if get_value(values, 'format') == "tnp":
         # TNP class
         atz = "D" if get_value(values, 'atz') == "classd" else None
-        ils = atz if get_value(values, 'ils') == "atz" else "G"
+        ils = {'classf': "F",
+               'classg': "G",
+               'atz': atz}.get(get_value(values, 'ils'))
         glider = {'classf': "F",
                   'classg': "G",
                   'gsec': None}.get(get_value(values, 'glider'))
@@ -200,9 +202,12 @@ def download():
     else:
         # Openair type
         atz = "CTR" if get_value(values, 'atz') == "ctr" else "D"
-        ils = atz if get_value(values, 'ils') == "atz" else "G"
         noatz = "F" if get_value(values, 'noatz') == "classf" else "G"
         ul = "F" if get_value(values, 'microlight') == "classf" else "G"
+
+        ils = {'classf': "F",
+               'classg': "G",
+               'atz': atz}.get(get_value(values, 'ils'))
 
         glider = {'classf': "F",
                   'classg': "G",

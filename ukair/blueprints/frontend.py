@@ -53,6 +53,9 @@ def get_airac_date(app):
 def get_release_header(app):
     return app.config['YAIXM_DATA']['release'].get('note', "")
 
+def get_commit(app):
+    return app.config['YAIXM_DATA']['release'].get('commit')
+
 # Permanently enabled LoA
 SPECIAL_LOA = ["CAMBRIDGE RAZ"]
 
@@ -171,6 +174,10 @@ def download():
     header += "\nAIRAC: {}\n".format(get_airac_date(current_app))
     header += "Produced by asselect.uk: {}\n".format(
             datetime.utcnow().isoformat())
+
+    commit = get_commit(current_app)
+    if commit:
+        header += "Commit: {}\n".format(commit)
 
     wrapper = TextWrapper(width=70, subsequent_indent="           ")
     header += wrapper.fill(

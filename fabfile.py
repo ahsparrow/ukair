@@ -58,7 +58,7 @@ def init_deploy(config):
 
     # Check-out application and create virtual environment
     with cd(base_dir):
-        run("git clone https://github.com/ahsparrow/ukair.git")
+        run("git clone https://gitlab.com/ahsparrow/ukair.git")
 
     with cd(code_dir):
         run("virtualenv -p python3 venv")
@@ -85,7 +85,7 @@ def deploy(config='deploy'):
     code_dir = os.path.join(cfg['base_dir'], "ukair")
     with cd(code_dir):
         with prefix("source venv/bin/activate"):
-            run("pip install git+https://github.com/ahsparrow/yaixm.git --upgrade --upgrade-strategy only-if-needed")
+            run("pip install git+https://gitlab.com/ahsparrow/yaixm.git --upgrade --upgrade-strategy only-if-needed")
 
         run("git pull")
 

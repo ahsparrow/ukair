@@ -9,7 +9,7 @@ Contributing
 
 I'm Alan Sparrow
 
-UKAIR is on [GitHub](https://github.com/ahsparrow/ukair).
+UKAIR is on [GitLab](https://gitlab.com/ahsparrow/ukair).
 
-Please get in touch, via GitHub or otherwise. If you've got something
+Please get in touch, via GitLab or otherwise. If you've got something
 to contribute it would be very welcome.

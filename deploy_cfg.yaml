@@ -47,6 +47,7 @@ uwsgi:
     socket: /run/ukair/uwsgi.sock
     chmod-socket: 660
     vacuum: true
+    buffer-size: 8192
 
     logto: /var/ukair/uwsgi.txt
     log-maxsize: 2000000

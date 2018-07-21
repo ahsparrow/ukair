@@ -300,7 +300,7 @@ def home():
 
     formats = [{'name': "openair", 'label': "OpenAir (recommended)"},
                {'name': "tnp", 'label': "TNP"},
-               {'name': "ratonly", 'label': "RA(T) Only (OpenAir)"}] 
+               {'name': "ratonly", 'label': "OpenAir, RA(T) only"}] 
 
     maxlevels = [{'value': "66000", 'label': "Unlimited"},
                  {'value': "19500", 'label': "FL195"},

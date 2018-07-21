@@ -105,8 +105,15 @@ def download():
         logger.info("BAD_REQUEST")
         abort(400)
 
-    # Merge LoA
     yaixm_data = get_yaixm(current_app)
+
+    # Get obstacles
+    if get_value(values, 'obstacle') == "include":
+        obstacles = yaixm_data.get('obstacle', [])
+    else:
+        obstacles = []
+
+    # Merge LoA
     loa_names = [v[4:] for v in values if v.startswith("loa-")]
     loa_names.extend(SPECIAL_LOA)
     loa = [loa for loa in yaixm_data.get('loa', [])
@@ -119,8 +126,9 @@ def download():
             if rat['name'] in rat_names]
 
     if get_value(values, 'format') == "ratonly":
-        # Replace airspace with RA(T)s
+        # Replace airspace with RA(T)s, remove obstacles
         airspace = rats
+        obstacles = []
     else:
         # Add RA(T)s to airspace
         airspace.extend(rats)
@@ -156,12 +164,6 @@ def download():
         south=south,
         max_level=max_level,
         exclude=exclude)
-
-    # Get obstacles
-    if get_value(values, 'obstacle') == "include":
-        obstacles = yaixm_data.get('obstacle', [])
-    else:
-        obstacles = []
 
     # File header
     header = current_app.config.get('HEADER', "")

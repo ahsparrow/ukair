@@ -56,6 +56,9 @@ def get_release_header(app):
 def get_commit(app):
     return app.config['YAIXM_DATA']['release'].get('commit')
 
+def get_services(app):
+    return app.config['SERVICES']
+
 # Permanently enabled LoA
 SPECIAL_LOA = ["CAMBRIDGE RAZ"]
 
@@ -71,7 +74,8 @@ DEFAULT_VALUES = {'noatz': "classg",
                   'maxlevel': "66000",
                   'north': "59",
                   'south': "50",
-                  'homesite': "None"}
+                  'homesite': "None",
+                  'radiofreq': "exclude"}
 
 # NOTAMS for today and tomorrow
 NOTAMS = ["today_south", "today_north", "tomorrow_south", "tomorrow_north"]
@@ -132,6 +136,10 @@ def download():
     else:
         # Add RA(T)s to airspace
         airspace.extend(rats)
+
+    # Radio frequencies
+    if get_value(values, 'radiofreq') == "include":
+        airspace = yaixm.merge_service(airspace, get_services(current_app))
 
     # Get wave areas to be excluded
     wave = copy(get_wave_names(current_app))
@@ -321,6 +329,9 @@ def home():
 
     gliding_sites = get_gliding_sites(current_app)
 
+    radiofreq = [{'value': 'exclude', 'label': "Exclude"},
+                 {'value': 'include', 'label': "Append to name"}]
+
     release = "AIRAC: %s" % get_airac_date(current_app)
 
     loa = [loa for loa in get_loa_names(current_app) if loa not in SPECIAL_LOA]
@@ -338,6 +349,7 @@ def home():
                         norths=norths,
                         souths=souths,
                         glidingsites=gliding_sites,
+                        radiofreq=radiofreq,
                         notams=get_notams(current_app)))
     return resp
 

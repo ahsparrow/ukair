@@ -63,6 +63,11 @@ def load_yaixm(app):
     gliding_sites.sort()
     gliding_sites.insert(0, "None")
 
+    services = {}
+    for service in yaixm_data.get('service', []):
+        for control in service['controls']:
+            services[control] = service['frequency']
+
     airac_date = yaixm_data['release']['airac_date'][:10]
     logger.info("AIRAC %s" % airac_date)
 
@@ -71,6 +76,7 @@ def load_yaixm(app):
     app.config['WAVE_NAMES'] = wave_names
     app.config['RAT_NAMES'] = rat_names
     app.config['GLIDING_SITES'] = gliding_sites
+    app.config['SERVICES'] = services
     app.config['AIRAC_DATE'] = airac_date
 
 # Flask application factory. config argument is either a dictionary of

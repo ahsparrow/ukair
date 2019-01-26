@@ -193,6 +193,20 @@
             </select>
           </div>
         </div>
+
+        <!-- Radio frequencies -->
+        <div class="form-group row">
+          <div class="col-5 text-right">
+            <label class="col-form-label">Radio frequencies</label>
+          </div>
+          <div class="col-7 col-md-4">
+            <select class="form-control" name="radiofreq">
+              {% for choice in radiofreq %}
+              <option value="{{choice.value}}" {{"selected" if values['radiofreq'] == choice.value}}>{{choice.label}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
       </div>
 
       <!-- About tab -->
@@ -246,6 +260,10 @@
         permanently enabled in ASSelect.<br/>Note - Openair doesn't support
         a RAZ airspace type so a Radio Mandatory Zone (RMZ) type is used
         as a substitute.</p>
+        <h6>Radio frequencies</h6>
+        <p>Radio frequencies can be appended to the airspace name. Note - not
+        all radio frequencies are included. Please let me know if a frequency
+        is missing or incorrect.</p>
         <h6>Temporary Restrictions, RA(T)</h6>
         <p>RA(T)s are detailed in Mauve AICs on the
         <a class="text-primary" href="http://www.nats-uk.ead-it.com/public/index.php.html">NATS AIS website</a>.
@@ -262,7 +280,7 @@
         <h6>Contact</h6>
         <address>Comments, corrections and complaints to:<br />
         <a class="text-primary" href="mailto:web@asselect.uk">Alan Sparrow</a></address>
-        <a class="small" href="https://gitlab.com/ahsparrow/ukair/commits/master">Version: 1.7.5</a>
+        <a class="small" href="https://gitlab.com/ahsparrow/ukair/commits/master">Version: 1.8.0</a>
       </div>
 
       <!-- NOTAM tab -->

@@ -264,6 +264,17 @@ def home():
         values = DEFAULT_VALUES
 
     choices = [
+        {'name': "atz",
+         'label': "ATZ",
+         'options': [{'value': "classd", 'option': "Class D"},
+                     {'value': "ctr", 'option': "Control Zone"}]
+        },
+        {'name': "ils",
+         'label': "ILS Feather",
+         'options': [{'value': "atz", 'option': "As ATZ"},
+                     {'value': "classf", 'option': "Class F"},
+                     {'value': "classg", 'option': "Class G"}]
+        },
         {'name': "noatz",
          'label': "Training A/F",
          'options': [{'value': "exclude", 'option': "Exclude"},
@@ -283,26 +294,15 @@ def home():
                      {'value': "classf", 'option': "Class F"},
                      {'value': "classg", 'option': "Class G"}]
         },
-        {'name': "obstacle",
-         'label': "Obstacle",
-         'options': [{'value': "exclude", 'option': "Exclude"},
-                     {'value': "include", 'option': "Include"}]
-        },
         {'name': "hgl",
          'label': "HIRTA/GVS",
          'options': [{'value': "exclude", 'option': "Exclude"},
                      {'value': "include", 'option': "Include"}]
         },
-        {'name': "atz",
-         'label': "ATZ",
-         'options': [{'value': "classd", 'option': "Class D"},
-                     {'value': "ctr", 'option': "Control Zone"}]
-        },
-        {'name': "ils",
-         'label': "ILS Feather",
-         'options': [{'value': "atz", 'option': "As ATZ"},
-                     {'value': "classf", 'option': "Class F"},
-                     {'value': "classg", 'option': "Class G"}]
+        {'name': "obstacle",
+         'label': "Obstacle",
+         'options': [{'value': "exclude", 'option': "Exclude"},
+                     {'value': "include", 'option': "Include"}]
         }
     ]
 

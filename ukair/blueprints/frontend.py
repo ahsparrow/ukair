@@ -276,7 +276,7 @@ def home():
                      {'value': "classg", 'option': "Class G"}]
         },
         {'name': "noatz",
-         'label': "Training A/F",
+         'label': "Unlicensed A/F",
          'options': [{'value': "exclude", 'option': "Exclude"},
                      {'value': "classf", 'option': "Class F"},
                      {'value': "classg", 'option': "Class G"}]

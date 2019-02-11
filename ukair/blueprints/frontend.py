@@ -75,7 +75,7 @@ DEFAULT_VALUES = {'noatz': "classg",
                   'north': "59",
                   'south': "50",
                   'homesite': "None",
-                  'radiofreq': "exclude"}
+                  'radiofreq': "no"}
 
 # NOTAMS for today and tomorrow
 NOTAMS = ["today_south", "today_north", "tomorrow_south", "tomorrow_north"]
@@ -138,7 +138,7 @@ def download():
         airspace.extend(rats)
 
     # Radio frequencies
-    if get_value(values, 'radiofreq') == "include":
+    if get_value(values, 'radiofreq') == "append":
         airspace = yaixm.merge_service(airspace, get_services(current_app))
 
     # Get wave areas to be excluded
@@ -329,8 +329,8 @@ def home():
 
     gliding_sites = get_gliding_sites(current_app)
 
-    radiofreq = [{'value': 'exclude', 'label': "Exclude"},
-                 {'value': 'include', 'label': "Append to name"}]
+    radiofreq = [{'value': 'no', 'label': "No"},
+                 {'value': 'append', 'label': "Append to name"}]
 
     release = "AIRAC: %s" % get_airac_date(current_app)
 

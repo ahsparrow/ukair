@@ -19,8 +19,7 @@ from __future__ import with_statement
 
 import os.path
 
-from fabric.api import cd, env, local, prefix, put, run, sudo, task
-from fabric.contrib.files import exists
+from fabric import task
 
 CONFIG = {
     'deploy': {
@@ -37,68 +36,69 @@ CONFIG = {
     }
 }
 
-def init_deploy(config):
+def init_deploy(c, config):
     base_dir = config['base_dir']
     code_dir = os.path.join(base_dir, "ukair")
-    if exists(code_dir):
+    if c.run('test -d {}'.format(code_dir)):
         return
 
     # Create program directory
-    sudo("install --directory --owner={} --group={} {}".format(env.user, env.user, base_dir))
+    c.sudo("install --directory --owner={} --group={} {}".format(env.user, env.user, base_dir))
 
     # Create directory for log files
-    sudo("install --directory --owner=ukair --group=www-data --mode=774 {var_dir}".format(**config))
+    c.sudo("install --directory --owner=ukair --group=www-data --mode=774 {var_dir}".format(**config))
 
     # Create directory for NOTAM files
-    sudo("install --directory --owner=ukair --group=www-data --mode=774 {var_dir}/media/notam".format(**config))
+    c.sudo("install --directory --owner=ukair --group=www-data --mode=774 {var_dir}/media/notam".format(**config))
 
     # Create directory for static files
     static_dir = os.path.join(base_dir, "static")
-    run("mkdir -p %s" % static_dir)
+    c.run("mkdir -p %s" % static_dir)
 
     # Check-out application and create virtual environment
-    with cd(base_dir):
-        run("git clone https://gitlab.com/ahsparrow/ukair.git")
+    with c.cd(base_dir):
+        c.run("git clone https://gitlab.com/ahsparrow/ukair.git")
 
-    with cd(code_dir):
-        run("virtualenv -p python3 venv")
-        with prefix("source venv/bin/activate"):
-            run("pip install -r deploy/requirements.txt")
+    with c.cd(code_dir):
+        c.run("virtualenv -p python3 venv")
+        with c.prefix("source venv/bin/activate"):
+            c.run("pip install -r deploy/requirements.txt")
 
         # Create web service files
-        sudo("cp deploy/{service} /etc/systemd/system".format(**config))
-        sudo("cp deploy/{site} /etc/nginx/sites-available".format(**config))
+        c.sudo("cp deploy/{service} /etc/systemd/system".format(**config))
+        c.sudo("cp deploy/{site} /etc/nginx/sites-available".format(**config))
 
     # Create uWSGI service
-    sudo("systemctl enable {service}".format(**config))
-    sudo("systemctl start {service}".format(**config))
+    c.sudo("systemctl enable {service}".format(**config))
+    c.sudo("systemctl start {service}".format(**config))
 
     # Add to web server
-    sudo("ln -sf /etc/nginx/sites-available/{site} /etc/nginx/sites-enabled".format(**config))
-    sudo("nginx -s reload")
+    c.sudo("ln -sf /etc/nginx/sites-available/{site} /etc/nginx/sites-enabled".format(**config))
+    c.sudo("nginx -s reload")
 
 @task
-def deploy(config='deploy'):
+def deploy(c, config='deploy'):
     cfg = CONFIG[config]
-    init_deploy(cfg)
+    init_deploy(c, cfg)
 
     code_dir = os.path.join(cfg['base_dir'], "ukair")
-    with cd(code_dir):
-        with prefix("source venv/bin/activate"):
-            run("pip install git+https://gitlab.com/ahsparrow/yaixm.git --upgrade --upgrade-strategy only-if-needed")
+    with c.cd(code_dir):
+        with c.prefix("source venv/bin/activate"):
+            c.run("pip install git+https://gitlab.com/ahsparrow/yaixm.git --upgrade --upgrade-strategy only-if-needed")
 
-        run("git pull")
+        c.run("git pull")
 
         # Copy web service files
-        sudo("cp deploy/{service} /etc/systemd/system".format(**cfg))
-        sudo("cp deploy/{site} /etc/nginx/sites-available".format(**cfg))
+        # FIXME Doesn't work with Fabric v2
+        #c.sudo("cp deploy/{service} /etc/systemd/system".format(**cfg))
+        #c.sudo("cp deploy/{site} /etc/nginx/sites-available".format(**cfg))
 
-    sudo("systemctl daemon-reload")
-    sudo("systemctl restart {service}".format(**cfg))
-    sudo("nginx -s reload")
+    c.sudo("systemctl daemon-reload")
+    c.sudo("systemctl restart {service}".format(**cfg))
+    c.sudo("nginx -s reload")
 
-@task
-def upload(filename, config='deploy'):
+@task()
+def upload(c, filename, config='deploy'):
     cfg = CONFIG[config]
-    put(filename, os.path.join(cfg['var_dir'], "yaixm.json"))
-    sudo("systemctl restart {service}".format(**cfg))
+    c.put(filename, os.path.join(cfg['var_dir'], "yaixm.json"))
+    c.sudo("systemctl restart {service}".format(**cfg))

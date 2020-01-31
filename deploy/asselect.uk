@@ -14,7 +14,15 @@ server {
         # Include this for certbot
         root /srv/www/asselect.uk/static;
 
-        try_files $uri @ukair;
+        location = / {
+            try_files $uri @ukair;
+        }
+        location = /download {
+            try_files $uri @ukair;
+        }
+        location = /release {
+            try_files $uri @ukair;
+        }
     }
 
     # Static files

@@ -230,11 +230,18 @@ def download():
                   'classg': "G",
                   'gsec': "W"}.get(get_value(values, 'glider'))
 
-        type_func = yaixm.make_openair_type(atz=atz, ils=ils, glider=glider,
-                                            noatz=noatz, ul=ul)
+        if get_value(values, 'format') == "competition":
+            name_func = yaixm.seq_name
+            type_func = yaixm.make_openair_type(
+                    atz=atz, ils=ils, glider=glider, noatz=noatz, ul=ul,
+                    comp=True)
+        else:
+            name_func = yaixm.noseq_name
+            type_func = yaixm.make_openair_type(atz=atz, ils=ils, glider=glider,
+                                                noatz=noatz, ul=ul)
 
-        converter = yaixm.Openair(filter_func=airfilter, type_func=type_func,
-                                  header=header)
+        converter = yaixm.Openair(filter_func=airfilter, name_func=name_func,
+                                  type_func=type_func, header=header)
         filename = "uk%s.txt" % get_airac_date(current_app)
 
     data = converter.convert(airspace, obstacles)
@@ -308,7 +315,8 @@ def home():
 
     formats = [{'name': "openair", 'label': "OpenAir (recommended)"},
                {'name': "tnp", 'label': "TNP"},
-               {'name': "ratonly", 'label': "OpenAir, RA(T) only"}] 
+               {'name': "ratonly", 'label': "OpenAir, RA(T) only"},
+               {'name': "competition", 'label': "Competition"}]
 
     maxlevels = [{'value': "66000", 'label': "Unlimited"},
                  {'value': "19500", 'label': "FL195"},

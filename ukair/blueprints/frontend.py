@@ -35,8 +35,11 @@ bp = Blueprint('ukair', __name__)
 def get_yaixm(app):
     return app.config['YAIXM_DATA']
 
-def get_loa_names(app):
-    return app.config['LOA_NAMES']
+def get_loa_opt_names(app):
+    return app.config['LOA_OPT_NAMES']
+
+def get_loa_default_names(app):
+    return app.config['LOA_DEFAULT_NAMES']
 
 def get_wave_names(app):
     return app.config['WAVE_NAMES']
@@ -58,9 +61,6 @@ def get_commit(app):
 
 def get_services(app):
     return app.config['SERVICES']
-
-# Permanently enabled LoA
-SPECIAL_LOA = ["CAMBRIDGE RAZ"]
 
 # Default UI settings
 DEFAULT_VALUES = {'noatz': "classg",
@@ -119,7 +119,7 @@ def download():
 
     # Merge LoA
     loa_names = [v[4:] for v in values if v.startswith("loa-")]
-    loa_names.extend(SPECIAL_LOA)
+    loa_names.extend(get_loa_default_names(current_app))
     loa = [loa for loa in yaixm_data.get('loa', [])
            if loa['name'] in loa_names]
     airspace = yaixm.merge_loa(yaixm_data['airspace'], loa)
@@ -342,7 +342,7 @@ def home():
 
     release = "AIRAC: %s" % get_airac_date(current_app)
 
-    loa = [loa for loa in get_loa_names(current_app) if loa not in SPECIAL_LOA]
+    loa = [loa for loa in get_loa_opt_names(current_app)]
 
     resp  = make_response(
         render_template("main.html",

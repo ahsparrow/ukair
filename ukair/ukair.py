@@ -49,8 +49,12 @@ def load_yaixm(app):
         app.config['YAIXM_DATA'] = None
         return
 
-    loa_names = [a['name'] for a in yaixm_data.get('loa', [])]
-    loa_names.sort()
+    loa_opt_names = [a['name'] for a in yaixm_data.get('loa', [])
+                     if not a.get('default')]
+    loa_opt_names.sort()
+
+    loa_default_names = [a['name'] for a in yaixm_data.get('loa', [])
+                         if a.get('default')]
 
     wave_names = [a['name'] for a in yaixm_data['airspace']
             if "TRA" in a.get('rules', []) or "NOSSR" in a.get('rules', [])]
@@ -72,7 +76,8 @@ def load_yaixm(app):
     logger.info("AIRAC %s" % airac_date)
 
     app.config['YAIXM_DATA'] = yaixm_data
-    app.config['LOA_NAMES'] = loa_names
+    app.config['LOA_OPT_NAMES'] = loa_opt_names
+    app.config['LOA_DEFAULT_NAMES'] = loa_default_names
     app.config['WAVE_NAMES'] = wave_names
     app.config['RAT_NAMES'] = rat_names
     app.config['GLIDING_SITES'] = gliding_sites

@@ -93,7 +93,7 @@ def create_app(config):
     # Load config from YAML file
     if isinstance(config, str):
         with open(os.getenv(config)) as cf:
-            config = yaml.load(cf)
+            config = yaml.load(cf, Loader=yaml.FullLoader)
 
     # Configure app and logging
     config_dict = config['flask']

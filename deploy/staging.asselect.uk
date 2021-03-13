@@ -5,14 +5,14 @@ server {
 
     location / {
         # Include this for certbot
-        root /srv/www/staging.asselect.uk/static;
+        root /var/www/staging.asselect.uk/static;
 
         try_files $uri @ukair;
     }
 
     # Static files
     location /static/ {
-        root /srv/www/staging.asselect.uk/ukair/ukair;
+        root /var/www/staging.asselect.uk/ukair/ukair;
     }
 
     # Media files

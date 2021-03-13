@@ -12,7 +12,7 @@ server {
 
     location / {
         # Include this for certbot
-        root /srv/www/asselect.uk/static;
+        root /var/www/asselect.uk/static;
 
         location = / {
             try_files $uri @ukair;
@@ -27,7 +27,7 @@ server {
 
     # Static files
     location /static/ {
-        root /srv/www/asselect.uk/ukair/ukair;
+        root /var/www/asselect.uk/ukair/ukair;
     }
 
     # Media files

@@ -23,13 +23,13 @@ from fabric import task
 
 CONFIG = {
     'deploy': {
-        'base_dir': "/srv/www/asselect.uk",
+        'base_dir': "/var/www/asselect.uk",
         'var_dir': "/var/ukair",
         'service': "ukair_wsgi.service",
         'site': "asselect.uk"
     },
     'staging': {
-        'base_dir': "/srv/www/staging.asselect.uk",
+        'base_dir': "/var/www/staging.asselect.uk",
         'var_dir': "/var/ukair_staging",
         'service': "ukair_staging_wsgi.service",
         'site':  "staging.asselect.uk"

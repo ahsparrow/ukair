@@ -1,15 +1,8 @@
 server {
     listen 80;
 
-    server_name asselect.uk www.asselect.uk;
+    server_name asselect.uk;
     return 301 https://$server_name$request_uri;
-}
-
-server {
-    listen 443 ssl;
-
-    server_name www.asselect.uk;
-    return 301 https://asselect.uk/$request_uri;
 }
 
 server {

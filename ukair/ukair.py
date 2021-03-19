@@ -107,4 +107,8 @@ def create_app(config):
     # Load YAIXM airspace, etc. data
     load_yaixm(app)
 
+    # Remove unnecessary whitespace
+    app.jinja_env.lstrip_blocks = True
+    app.jinja_env.trim_blocks = True
+
     return app

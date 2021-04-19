@@ -1,12 +1,6 @@
 server {
+    # Note- Certbot will redirect this to 443
     listen 80;
-
-    server_name asselect.uk;
-    return 301 https://$server_name$request_uri;
-}
-
-server {
-    listen 443 ssl;
 
     server_name asselect.uk;
 
@@ -41,7 +35,4 @@ server {
         include uwsgi_params;
         uwsgi_pass unix:/run/ukair/uwsgi.sock;
     }
-
-    ssl_certificate /etc/letsencrypt/live/asselect.uk/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/asselect.uk/privkey.pem;
 }

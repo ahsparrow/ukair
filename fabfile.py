@@ -15,11 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with ukair.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import with_statement
-
 import os.path
 
-from fabric import task
+from fabric2 import task
 
 CONFIG = {
     'deploy': {
@@ -39,11 +37,12 @@ CONFIG = {
 def init_deploy(c, config):
     base_dir = config['base_dir']
     code_dir = os.path.join(base_dir, "ukair")
-    if c.run('test -d {}'.format(code_dir)):
+    if c.run('test -d {}'.format(code_dir), warn=True).ok:
         return
 
     # Create program directory
-    c.sudo("install --directory --owner={} --group={} {}".format(env.user, env.user, base_dir))
+    c.sudo("install --directory --owner={} --group={} {}".format(
+        c.user, c.user, base_dir))
 
     # Create directory for log files
     c.sudo("install --directory --owner=ukair --group=www-data --mode=774 {var_dir}".format(**config))
@@ -57,7 +56,7 @@ def init_deploy(c, config):
 
     # Check-out application and create virtual environment
     with c.cd(base_dir):
-        c.run("git clone https://gitlab.com/ahsparrow/ukair.git")
+        c.run("git clone https://github.com/ahsparrow/ukair.git")
 
     with c.cd(code_dir):
         c.run("virtualenv -p python3 venv")
@@ -65,8 +64,8 @@ def init_deploy(c, config):
             c.run("pip install -r deploy/requirements.txt")
 
         # Create web service files
-        c.sudo("cp deploy/{service} /etc/systemd/system".format(**config))
-        c.sudo("cp deploy/{site} /etc/nginx/sites-available".format(**config))
+        c.run("sudo cp deploy/{service} /etc/systemd/system".format(**config))
+        c.run("sudo cp deploy/{site} /etc/nginx/sites-available".format(**config))
 
     # Create uWSGI service
     c.sudo("systemctl enable {service}".format(**config))
@@ -84,14 +83,13 @@ def deploy(c, config='deploy'):
     code_dir = os.path.join(cfg['base_dir'], "ukair")
     with c.cd(code_dir):
         with c.prefix("source venv/bin/activate"):
-            c.run("pip install git+https://gitlab.com/ahsparrow/yaixm.git --upgrade --upgrade-strategy only-if-needed")
+            c.run("pip install git+https://github.com/ahsparrow/yaixm.git --upgrade --upgrade-strategy only-if-needed")
 
         c.run("git pull")
 
         # Copy web service files
-        # FIXME Doesn't work with Fabric v2
-        #c.sudo("cp deploy/{service} /etc/systemd/system".format(**cfg))
-        #c.sudo("cp deploy/{site} /etc/nginx/sites-available".format(**cfg))
+        c.run("sudo cp deploy/{service} /etc/systemd/system".format(**cfg))
+        c.run("sudo cp deploy/{site} /etc/nginx/sites-available".format(**cfg))
 
     c.sudo("systemctl daemon-reload")
     c.sudo("systemctl restart {service}".format(**cfg))

@@ -1,11 +1,13 @@
-click==6.7
-Flask==0.12.2
-itsdangerous==0.24
-Jinja2==2.9.6
-jsonschema==2.6.0
-MarkupSafe==1.0
-PyYAML==3.12
-strict-rfc3339==0.7
-uWSGI==2.0.15
-Werkzeug==0.12.2
-git+https://github.com/ahsparrow/yaixm.git
+attrs==20.3.0
+click==7.1.2
+Flask==1.1.2
+itsdangerous==1.1.0
+Jinja2==2.11.3
+jsonschema==3.2.0
+MarkupSafe==1.1.1
+pyrsistent==0.17.3
+PyYAML==5.4.1
+six==1.15.0
+uWSGI==2.0.19.1
+Werkzeug==1.0.1
+yaixm @ git+https://github.com/ahsparrow/yaixm.git
